@@ -1,3 +1,4 @@
 #!/bin/sh
-npm install -g serve
-serve -s build
+npm install serve
+serve='node node_modules/serve/bin/serve.js'
+$serve -s build

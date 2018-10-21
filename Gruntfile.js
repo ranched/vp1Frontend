@@ -7,12 +7,11 @@ module.exports = function(grunt) {
     compress: {
       main: {
         options: {
-          archive: 'build.zip',
+          archive: 'dist/build.zip',
         },
         expand: true,
         cwd: 'build/',
-        src: ['**/*'],
-        dest: 'dist/'
+        src: '**/*'
       }
     }
   });

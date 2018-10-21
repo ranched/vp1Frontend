@@ -1,0 +1,8 @@
+{
+  "runtime":{
+    "majorVersion":"8"
+  },
+  "command": "sh ./start.sh",
+  "release": {},
+  "notes": "Internal Tools App"
+}

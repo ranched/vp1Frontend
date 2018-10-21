@@ -8,12 +8,11 @@ module.exports = function(grunt) {
       main: {
         options: {
           archive: 'build.zip',
-          pretty: true
         },
         expand: true,
-        cwd: './',
-        src: ['./build/**/*'],
-        dest: './dist/'
+        cwd: 'build/',
+        src: ['**/*'],
+        dest: 'dist/'
       }
     }
   });

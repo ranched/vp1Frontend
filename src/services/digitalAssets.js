@@ -27,6 +27,7 @@ const format = value => {
 }
 
 const getAssetDetails = (asset) => {
+  console.log(process.env);
   var scrm_id = asset.scrm_id;
   return getHubsters(scrm_id)
     .then(hubsters => { asset['hubsters'] = hubsters; return asset; })

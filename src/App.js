@@ -1,18 +1,13 @@
 import React, { Component } from 'react';
 import './App.css';
-import Header from './components/Header';
+import AssetDetail from './components/AssetDetail';
 import MainPage from './components/MainPage';
 import CreateAsset from './components/CreateAsset';
 import ScrollToTop from './components/ScrollToTop';
+import NavBar from './components/NavBar';
 
 // import route Components here
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  Switch,
-  Redirect
-} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 
 const styles = {
   app: {
@@ -25,15 +20,20 @@ class App extends Component {
     this.state = {};
   }
 
-  // componentDidMount = () => {
-  //   console.log(process.env);
-  // }
+  componentDidMount = () => { }
 
   render() {
     return (
       <Router>
         <ScrollToTop>
-          <Header />
+          <NavBar/>
+          <Switch className="App">
+            <Route exact path='/' render={(props) => <Redirect to="/assets" {...props}/>}/>
+            <Route exact path="/assets" render={(props) => <MainPage {...props}/>}/>
+            <Route path='/assets/:assetId' render={(props) => <AssetDetail {...props}/>}/>
+            <Route path="/create" render={(props) => <CreateAsset {...props}/>}/>
+          </Switch>
+{/*           <Header />
           <div className="App" style={styles.app}>
             <Route
               exact={true}
@@ -42,7 +42,7 @@ class App extends Component {
             />
             <Route path="/assets" component={MainPage} />
             <Route path="/create" component={CreateAsset} />
-          </div>
+          </div> */}
         </ScrollToTop>
       </Router>
     );

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid } from 'semantic-ui-react';
+import { Grid, Card } from 'semantic-ui-react';
 import AssetCard from './AssetCard';
 import PropTypes from 'prop-types';
 
@@ -9,17 +9,20 @@ class AssetList extends Component {
     this.state = {};
   }
 
-  //componentDidMount = () => {}
+  componentDidMount = () => {
+
+  }
 
   render() {
-    let { assets } = this.props;
-
+    var { assets, loading } = this.props;
     return (
       <Grid>
         <Grid.Row>
-          {assets.map(asset => (
-            <AssetCard asset={asset} key={asset.scrmId} />
-          ))}
+          <Card.Group>
+            {assets.map(asset => (
+              <AssetCard asset={asset} key={asset.scrm_id} loading={loading} />
+            ))}
+          </Card.Group>
         </Grid.Row>
       </Grid>
     );

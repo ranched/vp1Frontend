@@ -1,13 +1,14 @@
 import axios from 'axios';
 
-const apiUrl = process.env.REACT_APP_BASE_URL + '/mobile/custom/DigitalAssetsAPI/';
-const storageUrl = process.env.REACT_APP_BASE_URL + '/mobile/platform/storage/collections/NotionalArchitectureDiagrams/objects/';
+const url = process.env.REACT_APP_BASE_URL || 'https://BCC4E6D5F607401CA25AF4998B9E2932.mobile.ocp.oraclecloud.com:443';
+const apiUrl = url + '/mobile/custom/DigitalAssetsAPI/';
+const storageUrl = url + '/mobile/platform/storage/collections/NotionalArchitectureDiagrams/objects/';
 const auth = {
-  username: process.env.REACT_APP_USERNAME,
-  password: process.env.REACT_APP_PASSWORD
+  username: process.env.REACT_APP_USERNAME || 'nolan.corcoran@oracle.com',
+  password: process.env.REACT_APP_PASSWORD || 'SnickersMuffin3#'
 }
 const headers = {
-  'oracle-mobile-backend-id': process.env.REACT_APP_BACKEND_ID
+  'oracle-mobile-backend-id': process.env.REACT_APP_BACKEND_ID || '87d0bbb8-6b1d-4bfa-85c2-c75d6367ef04'
 }
 
 const capitalize = word => {

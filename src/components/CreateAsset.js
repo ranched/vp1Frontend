@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { Grid, Form, Button, Input, Label, Dropdown } from 'semantic-ui-react';
+import { Link, withRouter } from 'react-router-dom';
+import { Grid, Form, Button, Input, Dropdown } from 'semantic-ui-react';
 import dropOptions from '../sample/dropOptions';
 import * as api from '../services/digitalAssets';
 
@@ -9,11 +9,6 @@ const styles = {
     margin: '20px'
   }
 };
-
-const options = [
-  { key: 'm', text: 'Manufacturing', value: 'manufac' },
-  { key: 'a', text: 'Automobile', value: 'auto' }
-];
 
 const capitalize = word => {
   if (word === 'and') return word;
@@ -36,18 +31,21 @@ class CreateAssets extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      archDiagram: '',
+      cloudServices: [],
+      customer: '',
+      description: '',
+      hubsters: [],
+      industries: [],
+      oppId: '',
+      otubeLink: '',
+      pillars: [],
+      repo: '',
+      submitted: false,
       scrmId: '',
       title: '',
-      repo: '',
-      useCase: '',
-      archDiagram: '',
-      otubeLink: '',
-      industries: '',
-      cloudServices: '',
-      pillars: '',
-      description: '',
-      userEmail: '',
-      submitted: false
+      userEmail: ''
+      //useCase: '',
     };
   }
 
@@ -55,60 +53,39 @@ class CreateAssets extends Component {
 
   handleChange = (e, { name, value }) => this.setState({ [name]: value });
 
-  handleSubmit = () => {
+  handleSubmit = (e) => {
+    e.preventDefault()
+
     let assetObj = this.state;
 
-    // set up asset post 
+    // set up asset post object
     const assetPostObj = {
-      scrm_id: assetObj.scrmId,
-      repo_url: assetObj.repo,
-      use_case: assetObj.useCase,
+      //arch_diagram_id: assetObj.archDiagram,
+      cloud_services: assetObj.cloudServices,
+      createdBy: assetObj.userEmail,
+      customer: assetObj.customer,
+      description: assetObj.description,
+      hubsters: assetObj.hubsters,
+      industries: assetObj.industries,
+      modifiedBy: assetObj.userEmail,
+      modifiedOn: new Date(),
+      opp_id: assetObj.oppId,
       otube_url: assetObj.otubeLink,
-      description: assetObj.description
+      pillars: assetObj.pillars,
+      repo_url: assetObj.repo,
+      scrm_id: assetObj.scrmId,
+      title: assetObj.title,
+      //use_case: assetObj.useCase,
     };
+
 
     // make asset post
-    const assetPost = api.postAsset(assetPostObj)
-
-    //set up an industry post per industry and make posts
-    const industriesPosts = assetObj.industries.map(industry => (
-      {
-        industries: industry || 'example industry',
-        scrm_id: assetObj.scrmId || '123456'
-      })
-    ).map(postObj => api.postIndustry(postObj));
-
-
-    //set up a cloud service post per service and make posts
-    const cloudServicesPosts = assetObj.cloudServices.map(service => (
-      {
-        cloud_services: service || 'example service',
-        scrm_id: assetObj.scrmId || '123456'
-      })
-    ).map(postObj => api.postCloudService(postObj));
-
-    //set up a pillar post per pillar and make posts
-    const pillarsPosts = assetObj.pillars.map(pillar => (
-      {
-        cloud_services: pillar || 'example pillar',
-        scrm_id: assetObj.scrmId || '123456'
-      })
-    ).map(postObj => api.postPillar(postObj));
-
-
-    // set up user post object
-    const userPostObj = {
-      hubster_email: assetObj.userEmail || 'test.hubster@oracle.com',
-      hubster_name: assetObj.userName || 'Test Hubster',
-      scrm_id: assetObj.scrmId || '123456'
-    };
-
-    // make user post
-    const hubsterPost = api.postHubster(assetPostObj)
-
-
-    Promise.all([assetPost, industriesPosts, cloudServicesPosts, pillarsPosts, hubsterPost])
+    api.postAsset(assetPostObj)
       .catch(error => console.log(error));
+
+    this.props.history.push('/assets');
+
+
 
     //this.setState({ submitted: true });
   };
@@ -121,8 +98,8 @@ class CreateAssets extends Component {
             <h2 style={{ textAlign: 'center' }}>CREATE ASSET</h2>
           </Grid.Column>
           <Grid.Column width={10}>
-            <Form>
-              <Form.Field required>
+            <Form onSubmit={this.handleSubmit}>
+              {/* <Form.Field required>
                 <label>Select SCRM ID</label>
                 <Dropdown
                   fluid
@@ -133,6 +110,18 @@ class CreateAssets extends Component {
                   onChange={this.handleChange}
                   options={dropOptions.scrmIds}
                 />
+              </Form.Field> */}
+              <Form.Field required>
+                <label>SCRM ID</label>
+                <Input name="scrmId" value={this.state.scrmId}
+                  onChange={this.handleChange} />
+              </Form.Field>
+              <Form.Field>
+                <label>OPP ID</label>
+                <Input
+                  name="oppId"
+                  value={this.state.oppId}
+                  onChange={this.handleChange} />
               </Form.Field>
               <Form.Field>
                 <label>Title</label>
@@ -140,6 +129,22 @@ class CreateAssets extends Component {
                   name="title"
                   onChange={this.handleChange}
                   value={this.state.title}
+                />
+              </Form.Field>
+              <Form.Field>
+                <label>Customer</label>
+                <Input
+                  name="customer"
+                  onChange={this.handleChange}
+                  value={this.state.customer}
+                />
+              </Form.Field>
+              <Form.Field>
+                <label>Hubsters (comma seperated list)</label>
+                <Input
+                  name="hubsters"
+                  onChange={this.handleChange}
+                  value={this.state.hubsters}
                 />
               </Form.Field>
               <Form.Field>
@@ -218,40 +223,7 @@ class CreateAssets extends Component {
                   options={dropOptions.pillars.map(pillar => format(pillar))}
                 />
               </Form.Field>
-              {/* <Form.Group widths="equal">
-                <Form.Input fluid label="SCRM ID" placeholder="Enter SCRM ID" />
-              </Form.Group>
 
-              <Form.Group widths="equal" className="update-form-field">
-                <Form.Input fluid label="ALM" placeholder="ALM" />
-                <Form.Button>Update</Form.Button>
-              </Form.Group>
-
-              <Form.Group widths="equal">
-                <Form.Input fluid label="USECASE" placeholder="Usecase" />
-              </Form.Group>
-
-              <Form.Group widths="equal">
-                <Form.Input fluid label="PICTURE" placeholder="Picture" />
-              </Form.Group>
-
-              <Form.Group widths="equal">
-                <Form.Input fluid label="OTUBE" placeholder="Otube" />
-              </Form.Group>
-
-              <Form.Group widths="equal">
-                <Form.Select
-                  fluid
-                  label="INDUSTRY"
-                  options={options}
-                  placeholder="Industry"
-                />
-              </Form.Group>
-
-              <Form.TextArea
-                label="DESCRIPTION"
-                placeholder="Enter the description..."
-              /> */}
               <Form.Group>
                 <Form.Button primary>SUBMIT</Form.Button>
                 <Button as={Link} to="/">
@@ -268,4 +240,4 @@ class CreateAssets extends Component {
 
 CreateAssets.propTypes = {};
 
-export default CreateAssets;
+export default withRouter(CreateAssets);

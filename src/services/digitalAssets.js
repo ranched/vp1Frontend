@@ -28,7 +28,6 @@ const format = value => {
 }
 
 const getAssetDetails = (asset) => {
-  console.log(process.env);
   var scrm_id = asset.scrm_id;
   return getHubsters(scrm_id)
     .then(hubsters => { asset['hubsters'] = hubsters; return asset; })
@@ -48,7 +47,7 @@ const getAssetDetails = (asset) => {
 }
 
 export const getAllAssets = () => {
-  var reqUrl = apiUrl + 'assets';
+  var reqUrl = apiUrl + 'assets/all';
   return axios.get(reqUrl, { headers, auth })
     .then(result => result.data.items)
     .then(assets => {

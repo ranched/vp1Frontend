@@ -29,7 +29,7 @@ const format = value => {
   var text;
   var words = value.split('_');
   if (words.length === 1) { text = capitalize(words[0]); }
-  else { 
+  else {
     words = words.map(word => capitalize(word));
     text = words.join(' ');
   }
@@ -59,7 +59,7 @@ class MainPage extends Component {
     }
     api.getAllAssets()
       .then(assets => {
-        assets = sampleAssets.concat(assets).sort((a,b) => b.view_count-a.view_count);
+        assets = sampleAssets.concat(assets).sort((a, b) => b.view_count - a.view_count);
         var filteredAssets = assets;
         this.setState({ assets, recents, filteredAssets, filterOptions });
       })
@@ -84,7 +84,7 @@ class MainPage extends Component {
         });
       });
     });
-    this.setState({filteredAssets});
+    this.setState({ filteredAssets });
   }
 
   render() {
@@ -93,23 +93,23 @@ class MainPage extends Component {
     return (
       <div className="Main" style={styles.mainAssets}>
         <Stats />
-        <Filters options={filterOptions} update={this.filterAssets}/>
-        <Grid style={{height: "1280px", paddingTop: "50px"}}>
+        <Filters options={filterOptions} update={this.filterAssets} />
+        <Grid style={{ height: "1280px", paddingTop: "50px" }}>
           {/* <Grid.Row style={{height: "1250px"}}> */}
-            <Grid.Column width={12}>
-              <Header as='h1' textAlign='center'>
-                TOP ASSETS
+          <Grid.Column width={12}>
+            <Header as='h1' textAlign='center'>
+              TOP ASSETS
               </Header>
-              <AssetList 
-                assets={!filteredAssets ? sampleAssets.slice(0,6) : filteredAssets} 
-                loading={isLoading}/>
-            </Grid.Column>
-            <Grid.Column width={4} style={{height: "100%", overflowY: "scroll", overflowX: "hidden"}}>
-              <Header as='h1' textAlign='center'>
-                RECENTLY ADDED
+            <AssetList
+              assets={!filteredAssets ? sampleAssets.slice(0, 6) : filteredAssets}
+              loading={isLoading} />
+          </Grid.Column>
+          <Grid.Column width={4} style={{ height: "100%", overflowY: "scroll", overflowX: "hidden" }}>
+            <Header as='h1' textAlign='center'>
+              RECENTLY ADDED
               </Header>
-              <AssetList assets={!filteredAssets ? sampleAssets.slice(0,6) : filteredAssets} loading={isLoading}/>
-            </Grid.Column>
+            <AssetList assets={!filteredAssets ? sampleAssets.slice(0, 6) : filteredAssets} loading={isLoading} />
+          </Grid.Column>
           {/* </Grid.Row> */}
         </Grid>
       </div>

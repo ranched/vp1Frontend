@@ -27,6 +27,14 @@ const format = value => {
   return { value, text };
 };
 
+const trimStringSpaces = string => {
+  return string.trim();
+}
+
+const convertStringToArray = str => {
+  return str.split(',').map(trimStringSpaces);
+}
+
 class CreateAssets extends Component {
   constructor(props) {
     super(props);
@@ -65,7 +73,7 @@ class CreateAssets extends Component {
       createdBy: assetObj.userEmail,
       customer: assetObj.customer,
       description: assetObj.description,
-      hubsters: assetObj.hubsters,
+      hubsters: convertStringToArray(assetObj.hubsters),
       industries: assetObj.industries,
       modifiedBy: assetObj.userEmail,
       modifiedOn: new Date(),

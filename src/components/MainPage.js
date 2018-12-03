@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
-import { Grid, Header, Icon } from 'semantic-ui-react';
+import { Grid, Header } from 'semantic-ui-react';
 import Stats from './Stats';
 import Filters from './Filters';
 import AssetList from './AssetList';
-import AssetDetail from './AssetDetail';
-import axios from 'axios';
+import Footer from './Footer';
 import { sampleAssets, recents } from '../sample/assets';
 import dropOptions from '../sample/dropOptions';
 import * as api from '../services/digitalAssets';
@@ -18,6 +16,7 @@ const styles = {
     paddingLeft: "50px",
     paddingTop: "50px"
   }
+
 };
 
 const capitalize = word => {
@@ -57,13 +56,17 @@ class MainPage extends Component {
       cloudServices: dropOptions.cloudServices.map(cloudService => format(cloudService)),
       pillars: dropOptions.pillars.map(pillar => format(pillar))
     }
-    api.getAllAssets()
-      .then(assets => {
-        assets = sampleAssets.concat(assets).sort((a, b) => b.view_count - a.view_count);
-        var filteredAssets = assets;
-        this.setState({ assets, recents, filteredAssets, filterOptions });
-      })
-      .catch(error => console.log(error))
+    // If there are no keywords set...
+    if (!this.state.filters.keywords) {
+      api.getAllAssets()
+        .then(assets => {
+          assets = sampleAssets.concat(assets).sort((a, b) => b.view_count - a.view_count);
+          var filteredAssets = assets;
+          this.setState({ assets, recents, filteredAssets, filterOptions });
+        })
+        .catch(error => console.log(error))
+    }
+
   }
 
   componentDidMount = () => {
@@ -112,6 +115,7 @@ class MainPage extends Component {
           </Grid.Column>
           {/* </Grid.Row> */}
         </Grid>
+        <Footer />
       </div>
     );
   }

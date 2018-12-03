@@ -9,11 +9,6 @@ import NavBar from './components/NavBar';
 // import route Components here
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 
-const styles = {
-  app: {
-    fontFamily: "'Roboto', sans-serif"
-  }
-};
 class App extends Component {
   constructor(props) {
     super(props);
@@ -26,14 +21,14 @@ class App extends Component {
     return (
       <Router>
         <ScrollToTop>
-          <NavBar/>
+          <NavBar />
           <Switch className="App">
-            <Route exact path='/' render={(props) => <Redirect to="/assets" {...props}/>}/>
-            <Route exact path="/assets" render={(props) => <MainPage {...props}/>}/>
-            <Route path='/assets/:assetId' render={(props) => <AssetDetail {...props}/>}/>
-            <Route path="/create" render={(props) => <CreateAsset {...props}/>}/>
+            <Route exact path='/' render={(props) => <Redirect to="/assets" {...props} />} />
+            <Route exact path="/assets" render={(props) => <MainPage {...props} />} />
+            <Route path='/assets/:assetId' render={(props) => <AssetDetail {...props} />} />
+            <Route path="/create" render={(props) => <CreateAsset {...props} />} />
           </Switch>
-{/*           <Header />
+          {/*           <Header />
           <div className="App" style={styles.app}>
             <Route
               exact={true}

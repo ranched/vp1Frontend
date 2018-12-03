@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Dropdown, Button } from 'semantic-ui-react';
+import { Dropdown, Button, Input } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
 const styles = {
@@ -20,12 +20,14 @@ const format = value => {
   var text;
   var words = value.split('_');
   if (words.length === 1) { text = capitalize(words[0]); }
-  else { 
+  else {
     words = words.map(word => capitalize(word));
     text = words.join(' ');
   }
   return { value, text }
 }
+
+const splitStringOnSpaces = str => str.split(' ');
 
 class Filters extends Component {
   constructor(props) {
@@ -34,7 +36,8 @@ class Filters extends Component {
       industries: [],
       cloudServices: [],
       pillars: [],
-      hubsters: []
+      hubsters: [],
+      keywords: []
     };
   }
 
@@ -43,12 +46,13 @@ class Filters extends Component {
   updatePillars = (e, { name, value }) => { this.setState({ pillars: value }) }
   updateHubsters = (e, { name, value }) => { this.setState({ hubsters: value }) }
 
+  updateKeywords = (e, { name, value }) => { this.setState({ keywords: splitStringOnSpaces(value) }) }
+
   componentDidMount = () => {
 
   }
-
   render() {
-    var { industries, cloudServices, pillars, hubsters } = this.state;
+    var { industries, cloudServices, pillars, hubsters, keywords } = this.state;
     var { options, update } = this.props;
     return (
       <div className="Filters" style={styles.filters}>
@@ -81,12 +85,9 @@ class Filters extends Component {
           disabled
           placeholder="Hubsters"
         />
-        <Dropdown
-          style={styles.dropdown}
-          clearable multiple search selection
-          value={industries} onChange={this.updateIndustries}
-          /* options={useCase} */
-          disabled
+        <Input
+          name="keywords"
+          value={keywords.join(' ')} onChange={this.updateKeywords}
           placeholder="Keywords"
         />
         <Button color="red" onClick={() => update(this.state)}> Update </Button>

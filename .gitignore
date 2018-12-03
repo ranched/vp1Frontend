@@ -3,3 +3,4 @@ build
 build.sh
 create_deployment.sh
 .DS_Store
+.vscode/launch.json

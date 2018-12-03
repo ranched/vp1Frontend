@@ -1,5 +1,6 @@
-import React from 'react';
-import { Icon, Image, Statistic } from 'semantic-ui-react';
+import React, { Component } from 'react';
+import { Icon, Statistic } from 'semantic-ui-react';
+import * as api from '../services/digitalAssets';
 
 const styles = {
   stats: {
@@ -12,39 +13,78 @@ const styles = {
   }
 };
 
-const Stats = () => (
-  <Statistic.Group widths="four" style={styles.stats}>
-    <Statistic style={styles.stat}>
-      <Statistic.Value>
-        8<Icon color="yellow" name="box" />
-      </Statistic.Value>
-      <Statistic.Label>Assets</Statistic.Label>
-    </Statistic>
+const sumViews = (assetsArray) => {
+  return assetsArray.reduce((acc, cur) => {
+    return acc += cur.view_count;
+  }, 0)
+}
 
-    <Statistic style={styles.stat}>
-      <Statistic.Value>
-        10
-        <Icon color="olive" name="building" />
-      </Statistic.Value>
+class Stats extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      assetCount: 0,
+      industryCount: 0,
+      hubsterCount: 0,
+      viewCount: 0
 
-      <Statistic.Label>Industries</Statistic.Label>
-    </Statistic>
+    }
+  }
 
-    <Statistic style={styles.stat}>
-      <Statistic.Value>
-        42
-        <Icon color="teal" name="video" />
-      </Statistic.Value>
-      <Statistic.Label>Views</Statistic.Label>
-    </Statistic>
+  componentWillMount = () => {
+    /* Fetch data from APIs for counts*/
+    let assets = api.getAllAssets();
+    let industries = api.getAllIndustriesCount();
+    let hubsters = api.getAllHubstersCount();
 
-    <Statistic style={styles.stat}>
-      <Statistic.Value>
-        3<Icon color="violet" name="user" />
-      </Statistic.Value>
-      <Statistic.Label>Contributors</Statistic.Label>
-    </Statistic>
-  </Statistic.Group>
-);
+    Promise.all([assets, industries, hubsters])
+      .then(values => {
+        let [assets, hubsterCount, industryCount] = values;
+        let viewCount = sumViews(assets);
+        let assetCount = assets.length;
+        this.setState({ assetCount, hubsterCount, industryCount, viewCount });
+      })
+      .catch(error => console.log(error))
+  }
+  render() {
+    return (
+      <div>
+
+        <Statistic.Group widths="four" style={styles.stats}>
+          <Statistic style={styles.stat}>
+            <Statistic.Value>
+              {this.state.assetCount}<Icon color="yellow" name="box" />
+            </Statistic.Value>
+            <Statistic.Label>Assets</Statistic.Label>
+          </Statistic>
+
+          <Statistic style={styles.stat}>
+            <Statistic.Value>
+              {this.state.industryCount}
+              <Icon color="olive" name="building" />
+            </Statistic.Value>
+            <Statistic.Label>Industries</Statistic.Label>
+          </Statistic>
+
+          <Statistic style={styles.stat}>
+            <Statistic.Value>
+              {this.state.viewCount}
+              <Icon color="teal" name="video" />
+            </Statistic.Value>
+            <Statistic.Label>Views</Statistic.Label>
+          </Statistic>
+
+          <Statistic style={styles.stat}>
+            <Statistic.Value>
+              {this.state.hubsterCount}
+              <Icon color="violet" name="user" />
+            </Statistic.Value>
+            <Statistic.Label>Contributors</Statistic.Label>
+          </Statistic>
+        </Statistic.Group>
+      </div>
+    )
+  }
+};
 
 export default Stats;

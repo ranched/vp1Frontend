@@ -50,7 +50,7 @@ export const getAllAssets = () => {
   var reqUrl = apiUrl + 'assets/all';
   return axios.get(reqUrl, { headers, auth })
     .then(result => result.data.items)
-    .then(assets => {
+    /* .then(assets => {
       return assets.map(asset => {
         reqUrl = storageUrl + asset.arch_diagram_id;
         return axios.get(reqUrl, { headers, auth, responseType: 'arraybuffer' })
@@ -64,7 +64,7 @@ export const getAllAssets = () => {
           .catch(error => { console.log(error); throw Error(error); });
       })
     })
-    .then(promises => Promise.all(promises))
+    .then(promises => Promise.all(promises)) */
     .then(assets => assets.map(asset => getAssetDetails(asset)))
     .then(promises => Promise.all(promises))
     .catch(error => { console.log(error); throw Error(error); })
@@ -96,6 +96,13 @@ export const getHubsters = (scrm_id) => {
     .catch(error => { console.log(error); throw Error(error); });
 }
 
+export const getAllHubstersCount = () => {
+  var reqUrl = apiUrl + 'hubsters';
+  return axios.get(reqUrl, { headers, auth })
+    .then(result => result.data.items.length)
+    .catch(error => { console.log(error); throw Error(error); });
+}
+
 export const getCloudServices = (scrm_id) => {
   var reqUrl = apiUrl + 'cloud-services/' + scrm_id;
   return axios.get(reqUrl, { headers, auth })
@@ -107,6 +114,13 @@ export const getIndustries = (scrm_id) => {
   var reqUrl = apiUrl + 'industries/' + scrm_id;
   return axios.get(reqUrl, { headers, auth })
     .then(result => result.data.items.map(item => format(item.industry)))
+    .catch(error => { console.log(error); throw Error(error); });
+}
+
+export const getAllIndustriesCount = () => {
+  var reqUrl = apiUrl + 'industries';
+  return axios.get(reqUrl, { headers, auth })
+    .then(result => result.data.items.length)
     .catch(error => { console.log(error); throw Error(error); });
 }
 

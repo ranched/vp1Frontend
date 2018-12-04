@@ -50,7 +50,7 @@ export const getAllAssets = () => {
   var reqUrl = apiUrl + 'assets/all';
   return axios.get(reqUrl, { headers, auth })
     .then(result => result.data.items)
-    /* .then(assets => {
+    .then(assets => {
       return assets.map(asset => {
         reqUrl = storageUrl + asset.arch_diagram_id;
         return axios.get(reqUrl, { headers, auth, responseType: 'arraybuffer' })
@@ -61,10 +61,13 @@ export const getAllAssets = () => {
             console.log(asset);
             return asset;
           })
-          .catch(error => { console.log(error); throw Error(error); });
+          .catch(error => {
+            console.log("no image:", error);
+            return asset;
+          });
       })
     })
-    .then(promises => Promise.all(promises)) */
+    .then(promises => Promise.all(promises))
     .then(assets => assets.map(asset => getAssetDetails(asset)))
     .then(promises => Promise.all(promises))
     .catch(error => { console.log(error); throw Error(error); })
@@ -93,7 +96,7 @@ export const getSearchAssets = (query) => {
   var reqUrl = apiUrl + 'assets/search/' + query.replace(' ', '%20');
   return axios.get(reqUrl, { headers, auth })
     .then(result => result.data.items)
-    /* .then(assets => {
+    .then(assets => {
       return assets.map(asset => {
         reqUrl = storageUrl + asset.arch_diagram_id;
         return axios.get(reqUrl, { headers, auth, responseType: 'arraybuffer' })
@@ -104,10 +107,13 @@ export const getSearchAssets = (query) => {
             console.log(asset);
             return asset;
           })
-          .catch(error => { console.log(error); throw Error(error); });
+          .catch(error => {
+            console.log("no image:", error);
+            return asset;
+          });
       })
     })
-    .then(promises => Promise.all(promises)) */
+    .then(promises => Promise.all(promises))
     .then(assets => assets.map(asset => getAssetDetails(asset)))
     .then(promises => Promise.all(promises))
     .catch(error => { console.log(error); throw Error(error); })

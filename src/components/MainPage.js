@@ -69,7 +69,7 @@ class MainPage extends Component {
   fetchAllAssetsAndUpdateState = () => {
     return api.getAllAssets()
       .then(assets => {
-        assets = [...sampleAssets, ...assets];
+        //assets = [...sampleAssets, ...assets];
         assets = this.sortAssetsByViewCount(assets);
         var filteredAssets = [...assets];
         this.setState({ assets, recents, filteredAssets });
@@ -148,8 +148,9 @@ class MainPage extends Component {
             <AssetList assets={!filteredAssets ? sampleAssets.slice(0, 6) : filteredAssets} loading={isLoading} />
           </Grid.Column>
           {/* </Grid.Row> */}
+
+          <Footer />
         </Grid>
-        <Footer />
       </div>
     );
   }

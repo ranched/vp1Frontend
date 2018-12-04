@@ -35,7 +35,8 @@ class AssetDetail extends Component {
         </Button>
         <h1> Detail for SCRM Asset: {asset.scrm_id}</h1>
         <h2>Title: {asset.title}</h2><br />
-        <h2>Date added: {new Date(asset.publish_date).toLocaleDateString()}</h2>
+        {/*         <h2>Date added: {new Date(asset.publish_date).toLocaleDateString()}</h2>*/}
+        <h2>Date added: {new Date(asset.createdOn).toLocaleDateString()}</h2>
         <h2>Description: {asset.description}</h2>
         <h2>Views: {asset.view_count}</h2>
         <h2>Hubsters: {asset.hubsters.map(hubster => hubster.hubster_name).join(', ')}</h2><br />

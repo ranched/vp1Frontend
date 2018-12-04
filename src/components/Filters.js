@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Dropdown, Button, Input } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
+import dropOptions from '../sample/dropOptions';
 
 const styles = {
   filters: {
@@ -10,6 +11,7 @@ const styles = {
     margin: '5px'
   }
 };
+
 
 const capitalize = word => {
   if (word === "and") return word;
@@ -25,6 +27,13 @@ const format = value => {
     text = words.join(' ');
   }
   return { value, text }
+}
+
+/* Fetch data from API, including dropdown search values */
+var filterOptions = {
+  industries: dropOptions.industries.map(industry => format(industry)),
+  cloudServices: dropOptions.cloudServices.map(cloudService => format(cloudService)),
+  pillars: dropOptions.pillars.map(pillar => format(pillar))
 }
 
 const splitStringOnSpaces = str => str.split(' ');
@@ -48,40 +57,51 @@ class Filters extends Component {
 
   updateKeywords = (e, { name, value }) => { this.setState({ keywords: splitStringOnSpaces(value) }) }
 
+  clearFilters = () => {
+    this.setState({
+      industries: [],
+      cloudServices: [],
+      pillars: [],
+      hubsters: [],
+      keywords: []
+    });
+  }
+
   componentDidMount = () => {
 
   }
+
   render() {
     var { industries, cloudServices, pillars, hubsters, keywords } = this.state;
-    var { options, update } = this.props;
+    var { update } = this.props;
     return (
       <div className="Filters" style={styles.filters}>
         <Dropdown
           style={styles.dropdown}
           clearable multiple search selection
           value={industries} onChange={this.updateIndustries}
-          options={options.industries}
+          options={filterOptions.industries}
           placeholder="Industries"
         />
         <Dropdown
           style={styles.dropdown}
           clearable multiple search selection
           value={cloudServices} onChange={this.updateCloudServices}
-          options={options.cloudServices}
+          options={filterOptions.cloudServices}
           placeholder="Cloud Services"
         />
         <Dropdown
           style={styles.dropdown}
           clearable multiple search selection
           value={pillars} onChange={this.updatePillars}
-          options={options.pillars}
+          options={filterOptions.pillars}
           placeholder="Pillars"
         />
         <Dropdown
           style={styles.dropdown}
           clearable multiple search selection
           value={hubsters} onChange={this.updateHubsters}
-          options={options.cloudServices}
+          options={filterOptions.cloudServices}
           disabled
           placeholder="Hubsters"
         />
@@ -91,6 +111,7 @@ class Filters extends Component {
           placeholder="Keywords"
         />
         <Button color="red" onClick={() => update(this.state)}> Update </Button>
+        <Button onClick={() => this.clearFilters()}> Clear </Button>
       </div>
     );
   }

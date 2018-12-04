@@ -33,7 +33,7 @@ class NavBar extends Component {
           <Menu.Item style={{ textTransform: "uppercase", paddingRight: "20px", fontSize: "20px" }}>
             Nolan Corcoran
           </Menu.Item>
-          <Menu.Item as='a' style={{ marginRight: '1em', textTransform: "uppercase", fontSize: "20px" }}>
+          <Menu.Item style={{ marginRight: '1em', textTransform: "uppercase", fontSize: "20px" }}>
             <Link to='/create' onClick={this.logout}>Create Asset</Link>
           </Menu.Item>
         </Menu.Menu>

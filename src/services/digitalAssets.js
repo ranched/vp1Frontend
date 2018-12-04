@@ -89,6 +89,30 @@ export const getAsset = (scrm_id) => {
     .catch(error => { console.log(error); throw Error(error); });
 }
 
+export const getSearchAssets = (query) => {
+  var reqUrl = apiUrl + 'assets/search/' + query.replace(' ', '%20');
+  return axios.get(reqUrl, { headers, auth })
+    .then(result => result.data.items)
+    /* .then(assets => {
+      return assets.map(asset => {
+        reqUrl = storageUrl + asset.arch_diagram_id;
+        return axios.get(reqUrl, { headers, auth, responseType: 'arraybuffer' })
+          .then(result => Buffer.from(result.data, 'binary').toString('base64'))
+          .then(result => 'data:image/png;base64,' + result)
+          .then(arch_diagram => {
+            asset['arch_diagram'] = arch_diagram;
+            console.log(asset);
+            return asset;
+          })
+          .catch(error => { console.log(error); throw Error(error); });
+      })
+    })
+    .then(promises => Promise.all(promises)) */
+    .then(assets => assets.map(asset => getAssetDetails(asset)))
+    .then(promises => Promise.all(promises))
+    .catch(error => { console.log(error); throw Error(error); })
+}
+
 export const getHubsters = (scrm_id) => {
   var reqUrl = apiUrl + 'hubsters/' + scrm_id;
   return axios.get(reqUrl, { headers, auth })

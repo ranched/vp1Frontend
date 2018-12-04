@@ -45,7 +45,7 @@ class AssetDetail extends Component {
         <h2>Notional Architecture:</h2><br />
         <Image src={asset.arch_diagram} /><br /><br />
         <h2>Video:</h2>
-        <iframe id="kmsembed-0_fhworweh" width="768" height="515" src={asset.otube_url} class="kmsembed" allowfullscreen webkitallowfullscreen mozAllowFullScreen frameborder="0"></iframe>
+        <iframe id="kmsembed-0_fhworweh" title="oTubeLink" width="768" height="515" src={asset.otube_url} class="kmsembed" allowfullscreen webkitallowfullscreen mozAllowFullScreen frameborder="0"></iframe>
       </Container>
     )
   }

@@ -5,7 +5,6 @@ import Filters from './Filters';
 import AssetList from './AssetList';
 import Footer from './Footer';
 import { sampleAssets, recents } from '../sample/assets';
-import dropOptions from '../sample/dropOptions';
 import * as api from '../services/digitalAssets';
 
 import PropTypes from 'prop-types';
@@ -19,22 +18,6 @@ const styles = {
 
 };
 
-const capitalize = word => {
-  if (word === "and") return word;
-  return word.charAt(0).toUpperCase() + word.slice(1);
-}
-
-const format = value => {
-  var text;
-  var words = value.split('_');
-  if (words.length === 1) { text = capitalize(words[0]); }
-  else {
-    words = words.map(word => capitalize(word));
-    text = words.join(' ');
-  }
-  return { value, text }
-}
-
 class MainPage extends Component {
   constructor(props) {
     super(props);
@@ -47,56 +30,107 @@ class MainPage extends Component {
       url: props.match.url,
       path: props.match.path
     };
+    this.filterAssets = this.filterAssets.bind(this);
   }
 
-  componentWillMount = () => {
-    /* Fetch data from API, including dropdown search values */
-    var filterOptions = {
-      industries: dropOptions.industries.map(industry => format(industry)),
-      cloudServices: dropOptions.cloudServices.map(cloudService => format(cloudService)),
-      pillars: dropOptions.pillars.map(pillar => format(pillar))
-    }
-    // If there are no keywords set...
-    if (!this.state.filters.keywords) {
-      api.getAllAssets()
-        .then(assets => {
-          assets = sampleAssets.concat(assets).sort((a, b) => b.view_count - a.view_count);
-          var filteredAssets = assets;
-          this.setState({ assets, recents, filteredAssets, filterOptions });
-        })
-        .catch(error => console.log(error))
-    }
+  fetchSearchedAssets = (queryTermsArray) => {
+    console.log(`in fetchSearchedAssets`)
+    let queryStr = queryTermsArray.join(' ');
+    return api.getSearchAssets(queryStr);
 
+  }
+
+
+  /**
+   * Check to see if any filters other than keywords are set
+   * Parameters: filtersObj: {
+    industries: [],
+    cloudServices: [],
+    pillars: [],
+    hubsters: [],
+    keywords: []
+  };
+   * Returns: true if any keys other than 'keywords' has an array of length > 0
+   */
+  filtersSetTest = (filtersObj) => {
+    let filtersCopy = JSON.parse(JSON.stringify(filtersObj)); //make a copy
+    delete filtersCopy.keywords; //delete key
+    // return whether if any filters are set or not 
+    return Object.keys(filtersCopy).reduce((acc, cur) => {
+      //if a filter array has any items return true
+      return acc || filtersCopy[cur].length > 0;
+    }, false);
+  }
+
+  sortAssetsByViewCount = assets => {
+    return assets.sort((a, b) => b.view_count - a.view_count);
+  }
+
+  fetchAllAssetsAndUpdateState = () => {
+    return api.getAllAssets()
+      .then(assets => {
+        assets = [...sampleAssets, ...assets];
+        assets = this.sortAssetsByViewCount(assets);
+        var filteredAssets = [...assets];
+        this.setState({ assets, recents, filteredAssets });
+      })
+      .catch(error => console.log(error))
   }
 
   componentDidMount = () => {
+    this.fetchAllAssetsAndUpdateState();
+
     /* var recentsHeight = document.getElementsByClassName('Top-Assets')[0].clientHeight;
     this.setState({ recentsHeight }); */
   }
 
+  updateAssets = (filters) => {
+    console.log(`updateAssets fired with ${JSON.stringify(filters)}`)
+    if (!filters.keywords[0]) {
+      console.log(`no keywords to filter by`)
+      this.filterAssets(filters);
+    } else {
+      console.log(`fetching assets by keywords`)
+      this.fetchSearchedAssets(filters.keywords)
+        .then(assets => {
+          this.setState({ assets });
+          this.filterAssets(filters)
+        })
+    }
+  }
   filterAssets = (filters) => {
+
     var { assets } = this.state;
-    var filteredAssets = assets;
-    Object.keys(filters).forEach(key => {
-      var values = filters[key]; // filter values selected for [industries, cloudServices, pillars, hubsters]
-      values.forEach(value => {
-        filteredAssets = filteredAssets.filter(asset => { // each current asset
-          if (!asset[key]) console.log(asset);
-          var assetValues = asset[key].map(element => element.value);
-          return assetValues.includes(value);
+    var filteredAssets = [...assets];
+
+    // if any filters are set
+    if (this.filtersSetTest(filters)) {
+      //for each filter category
+      Object.keys(filters).forEach(key => {
+        var values = filters[key]; // filter values selected for [industries, cloudServices, pillars, hubsters]
+        values.forEach(value => {
+          filteredAssets = filteredAssets.filter(asset => { // each current asset
+            if (asset[key]) {
+              var assetValues = asset[key].map(element => element.value);
+              return assetValues.includes(value);
+            } else {
+              console.log(asset);
+              return false;
+            }
+          });
         });
       });
-    });
+    }
     this.setState({ filteredAssets });
   }
 
   render() {
-    var { assets, filteredAssets, filterOptions } = this.state;
+    var { assets, filteredAssets } = this.state;
     var isLoading = !assets;
     return (
       <div className="Main" style={styles.mainAssets}>
         <Stats />
-        <Filters options={filterOptions} update={this.filterAssets} />
+        <Filters update={this.updateAssets} />
         <Grid style={{ height: "1280px", paddingTop: "50px" }}>
           {/* <Grid.Row style={{height: "1250px"}}> */}
           <Grid.Column width={12}>

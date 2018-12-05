@@ -83,6 +83,7 @@ class CreateAssets extends Component {
       repo_url: assetObj.repo,
       scrm_id: assetObj.scrmId,
       title: assetObj.title,
+      view_count: 0
       //use_case: assetObj.useCase,
     };
 

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Header } from 'semantic-ui-react';
-import Stats from './Stats';
+import { Grid, Header, Segment } from 'semantic-ui-react';
 import Filters from './Filters';
 import AssetList from './AssetList';
 import Footer from './Footer';
@@ -18,6 +17,37 @@ const styles = {
 
 };
 
+/**
+ * Check to see if any filters other than keywords are set
+ * Parameters: filtersObj: {
+  industries: [],
+  cloudServices: [],
+  pillars: [],
+  hubsters: [],
+  keywords: []
+};
+ * Returns: true if any keys other than 'keywords' has an array of length > 0
+ */
+const filtersSetTest = filtersObj => {
+  let filtersCopy = JSON.parse(JSON.stringify(filtersObj)); //make a copy
+  delete filtersCopy.keywords; //delete key
+  // return whether if any filters are set or not 
+  return Object.keys(filtersCopy).reduce((acc, cur) => {
+    //if a filter array has any items return true
+    return acc || filtersCopy[cur].length > 0;
+  }, false);
+}
+
+const fetchSearchedAssets = queryTermsArray => {
+  console.log(`in fetchSearchedAssets`)
+  let queryStr = queryTermsArray.join(' ');
+  return api.getSearchAssets(queryStr);
+}
+
+const sortAssetsByViewCount = assets => {
+  return assets.sort((a, b) => b.view_count - a.view_count);
+}
+
 class MainPage extends Component {
   constructor(props) {
     super(props);
@@ -33,44 +63,11 @@ class MainPage extends Component {
     this.filterAssets = this.filterAssets.bind(this);
   }
 
-  fetchSearchedAssets = (queryTermsArray) => {
-    console.log(`in fetchSearchedAssets`)
-    let queryStr = queryTermsArray.join(' ');
-    return api.getSearchAssets(queryStr);
-
-  }
-
-
-  /**
-   * Check to see if any filters other than keywords are set
-   * Parameters: filtersObj: {
-    industries: [],
-    cloudServices: [],
-    pillars: [],
-    hubsters: [],
-    keywords: []
-  };
-   * Returns: true if any keys other than 'keywords' has an array of length > 0
-   */
-  filtersSetTest = (filtersObj) => {
-    let filtersCopy = JSON.parse(JSON.stringify(filtersObj)); //make a copy
-    delete filtersCopy.keywords; //delete key
-    // return whether if any filters are set or not 
-    return Object.keys(filtersCopy).reduce((acc, cur) => {
-      //if a filter array has any items return true
-      return acc || filtersCopy[cur].length > 0;
-    }, false);
-  }
-
-  sortAssetsByViewCount = assets => {
-    return assets.sort((a, b) => b.view_count - a.view_count);
-  }
-
   fetchAllAssetsAndUpdateState = () => {
     return api.getAllAssets()
       .then(assets => {
         //assets = [...sampleAssets, ...assets];
-        assets = this.sortAssetsByViewCount(assets);
+        assets = sortAssetsByViewCount(assets);
         var filteredAssets = [...assets];
         this.setState({ assets, recents, filteredAssets });
       })
@@ -91,20 +88,21 @@ class MainPage extends Component {
       this.filterAssets(filters);
     } else {
       console.log(`fetching assets by keywords`)
-      this.fetchSearchedAssets(filters.keywords)
+      fetchSearchedAssets(filters.keywords)
         .then(assets => {
           this.setState({ assets });
           this.filterAssets(filters)
         })
     }
   }
+
   filterAssets = (filters) => {
 
     var { assets } = this.state;
     var filteredAssets = [...assets];
 
     // if any filters are set
-    if (this.filtersSetTest(filters)) {
+    if (filtersSetTest(filters)) {
       //for each filter category
       Object.keys(filters).forEach(key => {
         var values = filters[key]; // filter values selected for [industries, cloudServices, pillars, hubsters]
@@ -129,25 +127,35 @@ class MainPage extends Component {
     var isLoading = !assets;
     return (
       <div className="Main" style={styles.mainAssets}>
-        <Stats />
         <Filters update={this.updateAssets} />
+
         <Grid style={{ height: "1280px", paddingTop: "50px" }}>
-          {/* <Grid.Row style={{height: "1250px"}}> */}
           <Grid.Column width={12}>
+
             <Header as='h1' textAlign='center'>
               TOP ASSETS
               </Header>
-            <AssetList
-              assets={!filteredAssets ? sampleAssets.slice(0, 6) : filteredAssets}
-              loading={isLoading} />
+
+            <Grid.Row>
+              <AssetList
+                assets={!filteredAssets ? sampleAssets.slice(0, 6) : filteredAssets}
+                loading={isLoading} />
+            </Grid.Row>
+
           </Grid.Column>
-          <Grid.Column width={4} style={{ height: "100%", overflowY: "scroll", overflowX: "hidden" }}>
+
+          <Grid.Column width={4} style={{ height: "100%" }}>
+
             <Header as='h1' textAlign='center'>
               RECENTLY ADDED
               </Header>
-            <AssetList assets={!filteredAssets ? sampleAssets.slice(0, 6) : filteredAssets} loading={isLoading} />
+
+
+            <Segment.Group style={{ overflowY: "scroll", overflowX: "hidden", height: '100vh' }} >
+              <AssetList assets={!filteredAssets ? sampleAssets.slice(0, 6) : filteredAssets} loading={isLoading} />
+            </Segment.Group>
+
           </Grid.Column>
-          {/* </Grid.Row> */}
 
           <Footer />
         </Grid>

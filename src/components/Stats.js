@@ -53,7 +53,7 @@ class Stats extends Component {
         <Statistic.Group widths="four" style={styles.stats}>
           <Statistic style={styles.stat}>
             <Statistic.Value>
-              {this.state.assetCount}<Icon color="yellow" name="box" />
+              {this.state.assetCount}<Icon size='mini' color="yellow" name="box" />
             </Statistic.Value>
             <Statistic.Label>Assets</Statistic.Label>
           </Statistic>
@@ -61,7 +61,7 @@ class Stats extends Component {
           <Statistic style={styles.stat}>
             <Statistic.Value>
               {this.state.industryCount}
-              <Icon color="olive" name="building" />
+              <Icon size='mini' color="olive" name="building" />
             </Statistic.Value>
             <Statistic.Label>Industries</Statistic.Label>
           </Statistic>
@@ -69,7 +69,7 @@ class Stats extends Component {
           <Statistic style={styles.stat}>
             <Statistic.Value>
               {this.state.viewCount}
-              <Icon color="teal" name="video" />
+              <Icon size='mini' color="teal" name="video" />
             </Statistic.Value>
             <Statistic.Label>Views</Statistic.Label>
           </Statistic>
@@ -77,7 +77,7 @@ class Stats extends Component {
           <Statistic style={styles.stat}>
             <Statistic.Value>
               {this.state.hubsterCount}
-              <Icon color="violet" name="user" />
+              <Icon size='mini' color="violet" name="user" />
             </Statistic.Value>
             <Statistic.Label>Contributors</Statistic.Label>
           </Statistic>

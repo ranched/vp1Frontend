@@ -5,8 +5,23 @@ import { Link } from 'react-router-dom';
 const styles = {
   card: {
     margin: '10px'
+  },
+  archImg: {
+    maxHeight: '20vh',
+    minHeight: '20vh',
+    maxWidth: '100%',
+    objectFit: 'scale-down',
+
+    backgroundColor: 'white'
   }
 };
+
+const trimWithEllipis = str => {
+  if (str.length > 50) {
+    str = str.slice(0, 55) + '...';
+  }
+  return str;
+}
 
 class AssetCard extends Component {
   constructor(props) {
@@ -45,22 +60,24 @@ class AssetCard extends Component {
   render() {
     var { asset, loading } = this.props;
     if (loading) { return this.loadingCard() }
-    var pathname = '/assets/'+asset.scrm_id;
+    var pathname = '/assets/' + asset.scrm_id;
     var state = { asset }
+    var publishDate = asset.publish_date || asset.createdOn;
     return (
-      <Card as={Link} style={styles.card} to={{pathname, state}}>
-        <Image src={asset.arch_diagram} />
+      <Card as={Link} style={styles.card} to={{ pathname, state }}>
+        <Image src={asset.arch_diagram} style={styles.archImg} />
         <Card.Content>
-          <Card.Header>{asset.title}</Card.Header>
+          <Card.Header>{trimWithEllipis(asset.title)}</Card.Header>
           <Card.Meta>
-            <span className="date">
-              Added {new Date(asset.publish_date).toLocaleDateString()}
-            </span>
+
           </Card.Meta>
-          <Card.Description>{asset.description}</Card.Description>
+          {/* <Card.Description>{asset.description}</Card.Description> */}
         </Card.Content>
         <Card.Content extra>
-          <p>{asset.view_count} Views</p>
+          {asset.view_count} Views
+          <span className="date" style={{ float: 'right' }}>
+            Added {new Date(publishDate).toLocaleDateString()}
+          </span>
         </Card.Content>
       </Card>
     );

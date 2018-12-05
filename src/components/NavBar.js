@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Image, Menu } from 'semantic-ui-react';
 import { Link/* , withRouter */ } from 'react-router-dom';
 import logo from '../assets/images/oracle/logo-red.png';
+import Stats from './Stats';
+
 
 class NavBar extends Component {
 
@@ -29,6 +31,7 @@ class NavBar extends Component {
           <Image size='small' src={logo} style={{ marginRight: '1.5em'/* , , height: "auto", width: "10%"  */ }} />
           Asset Hub
         </Menu.Item>
+        {/* <Stats /> */}
         <Menu.Menu position='right'>
           <Menu.Item style={{ textTransform: "uppercase", paddingRight: "20px", fontSize: "20px" }}>
             Nolan Corcoran

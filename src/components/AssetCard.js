@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Card, Image, Placeholder } from 'semantic-ui-react';
+import { Card, Image, Placeholder, Popup, Dimmer, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import wireframe from '../assets/images/placeholderImage.png';
 
 const styles = {
   card: {
@@ -18,10 +19,11 @@ const styles = {
 
 const trimWithEllipis = str => {
   if (str.length > 50) {
-    str = str.slice(0, 55) + '...';
+    str = str.slice(0, 50) + '...';
   }
   return str;
 }
+
 
 class AssetCard extends Component {
   constructor(props) {
@@ -32,6 +34,9 @@ class AssetCard extends Component {
   componentDidMount = () => {
     //console.log(typeof this.props.asset.arch_diagram);
   }
+
+  handleShow = () => this.setState({ active: true })
+  handleHide = () => this.setState({ active: false })
 
   loadingCard = () => {
     return (
@@ -59,23 +64,30 @@ class AssetCard extends Component {
 
   render() {
     var { asset, loading } = this.props;
+    var { active } = this.state;
     if (loading) { return this.loadingCard() }
     var pathname = '/assets/' + asset.scrm_id;
     var state = { asset }
     var publishDate = asset.publish_date || asset.createdOn;
     return (
       <Card as={Link} style={styles.card} to={{ pathname, state }}>
-        <Image src={asset.arch_diagram} style={styles.archImg} />
-        <Card.Content>
-          <Card.Header>{trimWithEllipis(asset.title)}</Card.Header>
-          <Card.Meta>
-
-          </Card.Meta>
-          {/* <Card.Description>{asset.description}</Card.Description> */}
-        </Card.Content>
+        <Dimmer.Dimmable as={Image} blurring dimmed={active} onMouseEnter={this.handleShow} onMouseLeave={this.handleHide}>
+          <Dimmer active={active} inverted onClickOutside={this.handleHide} >
+            <Button color="red">VIEW</Button>
+          </Dimmer>
+          <Image src={asset.arch_diagram} style={styles.archImg} />
+        </Dimmer.Dimmable>
+        <Popup
+          content={asset.description} on='hover'
+          trigger={
+            <Card.Content style={{ padding: "7px" }}>
+              <Card.Header style={{ fontSize: "14px" }}>{trimWithEllipis(asset.title)}</Card.Header>
+            </Card.Content>
+          }
+        />
         <Card.Content extra>
           {asset.view_count} Views
-          <span className="date" style={{ float: 'right' }}>
+              <span className="date" style={{ float: 'right' }}>
             Added {new Date(publishDate).toLocaleDateString()}
           </span>
         </Card.Content>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Header, Segment } from 'semantic-ui-react';
+import { Grid, Header, Sidebar } from 'semantic-ui-react';
 import Filters from './Filters';
 import AssetList from './AssetList';
 import Footer from './Footer';
@@ -10,9 +10,9 @@ import PropTypes from 'prop-types';
 
 const styles = {
   mainAssets: {
-    margin: '50px',
-    paddingLeft: "50px",
-    paddingTop: "50px"
+    marginTop: '75px',
+    /* paddingLeft: "50px",
+    paddingTop: "50px" */
   }
 
 };
@@ -127,38 +127,39 @@ class MainPage extends Component {
     var isLoading = !assets;
     return (
       <div className="Main" style={styles.mainAssets}>
-        <Filters update={this.updateAssets} />
+        <Sidebar.Pushable as={Grid} className="topAssets" style={{ paddingTop: "50px", margin: "0px" }}>
+          <Sidebar.Pusher>
+            <Filters update={this.updateAssets} />
+            <Header as='h1' className="topHeader" style={{ textAlign: "center", paddingBottom: "50px" }}>TOP ASSETS</Header>
+            <AssetList
+              assets={!filteredAssets ? sampleAssets.slice(0, 6) : filteredAssets}
+              loading={isLoading}
+              topAssets={true} />
+            <Footer />
+          </Sidebar.Pusher>
+        </Sidebar.Pushable>
 
-        <Grid style={{ height: "1280px", paddingTop: "50px" }}>
-          <Grid.Column width={12}>
-
-            <Header as='h1' textAlign='center'>
-              TOP ASSETS
-              </Header>
-
-            <Grid.Row>
-              <AssetList
-                assets={!filteredAssets ? sampleAssets.slice(0, 6) : filteredAssets}
-                loading={isLoading} />
-            </Grid.Row>
-
-          </Grid.Column>
-
-          <Grid.Column width={4} style={{ height: "100%" }}>
-
-            <Header as='h1' textAlign='center'>
+        <Sidebar as={Grid}
+          basic inverted vertical visible
+          animation='overlay'
+          direction='right'
+          width='wide'
+          style={{
+            backgroundColor: "#F7F7F7", justifyContent: "center" /*padding: "50px 28px 0px 28px", overflow: "hidden"*/
+          }}>
+          <Grid.Row className="headerRow">
+            <Header as='h1'
+              className="headerRow">
               RECENTLY ADDED
-              </Header>
-
-
-            <Segment.Group style={{ overflowY: "scroll", overflowX: "hidden", height: '100vh' }} >
-              <AssetList assets={!filteredAssets ? sampleAssets.slice(0, 6) : filteredAssets} loading={isLoading} />
-            </Segment.Group>
-
-          </Grid.Column>
-
-          <Footer />
-        </Grid>
+	  </Header>
+          </Grid.Row>
+          <Grid.Row className="contentRow">
+            <AssetList
+              assets={!filteredAssets ? sampleAssets.slice(0, 6) : filteredAssets}
+              loading={isLoading}
+              topAssets={false} />
+          </Grid.Row>
+        </Sidebar>
       </div>
     );
   }

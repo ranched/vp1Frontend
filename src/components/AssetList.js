@@ -14,14 +14,24 @@ class AssetList extends Component {
   }
 
   render() {
-    var { assets, loading } = this.props;
-    return (
-      <Card.Group>
-        {assets.map(asset => (
-          <AssetCard asset={asset} key={asset.scrm_id} loading={loading} />
-        ))}
-      </Card.Group>
-    );
+    var { assets, loading, topAssets } = this.props;
+    if (topAssets) {
+      return (
+        <Card.Group itemsPerRow={4}>
+          {assets.map(asset => (
+            <AssetCard asset={asset} key={asset.scrm_id} loading={loading} />
+          ))}
+        </Card.Group>
+      )
+    } else {
+      return (
+        <Card.Group itemsPerRow={1} style={{ overflowY: "scroll", padding: "0px 10px 10px 20px", marginBottom: "50px" }}>
+          {assets.map(asset => (
+            <AssetCard asset={asset} key={asset.scrm_id} loading={loading} />
+          ))}
+        </Card.Group>
+      )
+    }
   }
 }
 

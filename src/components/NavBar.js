@@ -31,7 +31,7 @@ class NavBar extends Component {
           <Image size='small' src={logo} style={{ marginRight: '1.5em'/* , , height: "auto", width: "10%"  */ }} />
           Asset Hub
         </Menu.Item>
-        {/* <Stats /> */}
+        {/*<Stats />*/}
         <Menu.Menu position='right'>
           <Menu.Item style={{ textTransform: "uppercase", paddingRight: "20px", fontSize: "20px" }}>
             Nolan Corcoran

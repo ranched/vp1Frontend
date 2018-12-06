@@ -15,3 +15,40 @@
     transform: rotate(360deg);
   }
 }
+
+.grid.ui.overlay.right.wide.visible.sidebar {
+  margin-top: 75px !important;
+  padding-bottom: 75px !important;
+  overflow-y: hidden !important;
+}
+
+.topAssets {
+  margin-right: 350px !important;
+  padding-top: 25px !important;
+}
+
+.topHeader {
+  padding-bottom: 20px !important;
+}
+
+.headerRow {
+  overflow-y: hidden !important;
+  text-align: center !important;
+  align-items: center !important;
+  padding-top: 20px !important;
+}
+
+.contentRow {
+  height: 100%;
+}
+
+.App-footer {
+  margin: 28px -14px 0px -14px !important;
+  padding: 20px !important;
+  background-color: #F7F7F7 !important;
+  color: black !important;
+}
+
+.footer-text {
+  color: black;
+}

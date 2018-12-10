@@ -83,9 +83,13 @@ class MainPage extends Component {
 
   updateAssets = (filters) => {
     console.log(`updateAssets fired with ${JSON.stringify(filters)}`)
+    //;
     if (!filters.keywords[0]) {
       console.log(`no keywords to filter by`)
-      this.filterAssets(filters);
+      this.fetchAllAssetsAndUpdateState()
+        .then(
+          this.filterAssets(filters)
+        )
     } else {
       console.log(`fetching assets by keywords`)
       fetchSearchedAssets(filters.keywords)
@@ -97,12 +101,12 @@ class MainPage extends Component {
   }
 
   filterAssets = (filters) => {
-
     var { assets } = this.state;
     var filteredAssets = [...assets];
 
     // if any filters are set
     if (filtersSetTest(filters)) {
+      ;
       //for each filter category
       Object.keys(filters).forEach(key => {
         var values = filters[key]; // filter values selected for [industries, cloudServices, pillars, hubsters]
@@ -129,7 +133,7 @@ class MainPage extends Component {
       <div className="Main" style={styles.mainAssets}>
         <Sidebar.Pushable as={Grid} className="topAssets" style={{ paddingTop: "50px", margin: "0px" }}>
           <Sidebar.Pusher>
-            <Filters update={this.updateAssets} />
+            <Filters filter={this.filterAssets} update={this.updateAssets} />
             <Header as='h1' className="topHeader" style={{ textAlign: "center", paddingBottom: "50px" }}>TOP ASSETS</Header>
             <AssetList
               assets={!filteredAssets ? sampleAssets.slice(0, 6) : filteredAssets}

@@ -2,21 +2,14 @@ import React from 'react';
 import {
     Container,
     Divider,
-    Dropdown,
     Grid,
     Header,
     Image,
     List,
-    Menu,
     Segment,
 } from 'semantic-ui-react';
 import logo from '../assets/images/oracle/csh-logo-1.png';
 
-const styles = {
-    feedbackAndVersionDiv: {
-        textAlign: 'center'
-    }
-};
 
 const Footer = () => (
     <Segment vertical className='App-footer'>

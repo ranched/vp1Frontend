@@ -1,20 +1,21 @@
-import React, { Component } from 'react';
-import { Grid, Header, Sidebar } from 'semantic-ui-react';
-import Filters from './Filters';
-import AssetList from './AssetList';
-import Footer from './Footer';
-import { sampleAssets, recents } from '../sample/assets';
-import * as api from '../services/digitalAssets';
+import React, { Component } from "react";
+import { Grid, Header, Sidebar } from "semantic-ui-react";
+import sizeMe from "react-sizeme";
+import Filters from "./Filters";
+import AssetList from "./AssetList";
+import Footer from "./Footer";
+import { sampleAssets, recents } from "../sample/assets";
+import * as api from "../services/digitalAssets";
 
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 const styles = {
   mainAssets: {
-    marginTop: '75px',
+    marginTop: "80px"
+
     /* paddingLeft: "50px",
     paddingTop: "50px" */
   }
-
 };
 
 /**
@@ -31,22 +32,22 @@ const styles = {
 const filtersSetTest = filtersObj => {
   let filtersCopy = JSON.parse(JSON.stringify(filtersObj)); //make a copy
   delete filtersCopy.keywords; //delete key
-  // return whether if any filters are set or not 
+  // return whether if any filters are set or not
   return Object.keys(filtersCopy).reduce((acc, cur) => {
     //if a filter array has any items return true
     return acc || filtersCopy[cur].length > 0;
   }, false);
-}
+};
 
 const fetchSearchedAssets = queryTermsArray => {
-  console.log(`in fetchSearchedAssets`)
-  let queryStr = queryTermsArray.join(' ');
+  console.log(`in fetchSearchedAssets`);
+  let queryStr = queryTermsArray.join(" ");
   return api.getSearchAssets(queryStr);
-}
+};
 
 const sortAssetsByViewCount = assets => {
   return assets.sort((a, b) => b.view_count - a.view_count);
-}
+};
 
 class MainPage extends Component {
   constructor(props) {
@@ -58,46 +59,44 @@ class MainPage extends Component {
       filteredAssets: null,
       recents: null,
       url: props.match.url,
-      path: props.match.path
+      path: props.match.path,
+      width: null,
+      widthSet: false
     };
     this.filterAssets = this.filterAssets.bind(this);
   }
 
   fetchAllAssetsAndUpdateState = () => {
-    return api.getAllAssets()
+    return api
+      .getAllAssets()
       .then(assets => {
         //assets = [...sampleAssets, ...assets];
         assets = sortAssetsByViewCount(assets);
         var filteredAssets = [...assets];
         this.setState({ assets, recents, filteredAssets });
       })
-      .catch(error => console.log(error))
-  }
+      .catch(error => console.log(error));
+  };
 
   componentDidMount = () => {
     this.fetchAllAssetsAndUpdateState();
+  };
 
-    /* var recentsHeight = document.getElementsByClassName('Top-Assets')[0].clientHeight;
-    this.setState({ recentsHeight }); */
-  }
-
-  updateAssets = (filters) => {
-    console.log(`updateAssets fired with ${JSON.stringify(filters)}`)
+  updateAssets = filters => {
+    console.log(`updateAssets fired with ${JSON.stringify(filters)}`);
     if (!filters.keywords[0]) {
-      console.log(`no keywords to filter by`)
+      console.log(`no keywords to filter by`);
       this.filterAssets(filters);
     } else {
-      console.log(`fetching assets by keywords`)
-      fetchSearchedAssets(filters.keywords)
-        .then(assets => {
-          this.setState({ assets });
-          this.filterAssets(filters)
-        })
+      console.log(`fetching assets by keywords`);
+      fetchSearchedAssets(filters.keywords).then(assets => {
+        this.setState({ assets });
+        this.filterAssets(filters);
+      });
     }
-  }
+  };
 
-  filterAssets = (filters) => {
-
+  filterAssets = filters => {
     var { assets } = this.state;
     var filteredAssets = [...assets];
 
@@ -107,7 +106,8 @@ class MainPage extends Component {
       Object.keys(filters).forEach(key => {
         var values = filters[key]; // filter values selected for [industries, cloudServices, pillars, hubsters]
         values.forEach(value => {
-          filteredAssets = filteredAssets.filter(asset => { // each current asset
+          filteredAssets = filteredAssets.filter(asset => {
+            // each current asset
             if (asset[key]) {
               var assetValues = asset[key].map(element => element.value);
               return assetValues.includes(value);
@@ -120,44 +120,81 @@ class MainPage extends Component {
       });
     }
     this.setState({ filteredAssets });
-  }
+  };
+
+  setWidth = width => {
+    if (this.state.widthSet) return;
+    this.setState({ width, widthSet: true });
+    console.log("width set!!", width);
+  };
 
   render() {
-    var { assets, filteredAssets } = this.state;
+    var { assets, filteredAssets, width } = this.state;
     var isLoading = !assets;
     return (
       <div className="Main" style={styles.mainAssets}>
-        <Sidebar.Pushable as={Grid} className="topAssets" style={{ paddingTop: "50px", margin: "0px" }}>
-          <Sidebar.Pusher>
+        <Sidebar.Pushable
+          as={Grid}
+          style={{ paddingTop: "75px", margin: "0px" }}
+        >
+          <Sidebar.Pusher
+            className="topAssets" /*  style={{ padding: "0px" }} */
+          >
             <Filters update={this.updateAssets} />
-            <Header as='h1' className="topHeader" style={{ textAlign: "center", paddingBottom: "50px" }}>TOP ASSETS</Header>
+            <Header
+              as="h1"
+              className="topHeader"
+              style={{ textAlign: "center", paddingBottom: "50px" }}
+            >
+              TOP ASSETS
+            </Header>
             <AssetList
-              assets={!filteredAssets ? sampleAssets.slice(0, 6) : filteredAssets}
+              assets={
+                !filteredAssets ? sampleAssets.slice(0, 6) : filteredAssets
+              }
               loading={isLoading}
-              topAssets={true} />
-            <Footer />
-          </Sidebar.Pusher>
+              topAssets={true}
+              cardWidth={width}
+              setWidth={this.setWidth}
+            />
+          </Sidebar.Pusher>{" "}
+          <Footer />
         </Sidebar.Pushable>
 
-        <Sidebar as={Grid}
-          basic inverted vertical visible
-          animation='overlay'
-          direction='right'
-          width='wide'
+        <Sidebar
+          as={Grid}
+          vertical
+          visible
+          animation="overlay"
+          direction="right"
           style={{
-            backgroundColor: "#F7F7F7", justifyContent: "center" /*padding: "50px 28px 0px 28px", overflow: "hidden"*/
-          }}>
+            backgroundColor: "#F7F7F7",
+            justifyContent: "center",
+            width: "300px"
+          }}
+        >
           <Grid.Row className="headerRow">
-            <Header as='h1'
-              className="headerRow">
-              RECENTLY ADDED
-	  </Header>
+            <Grid.Column>
+              <Header as="h1">RECENTLY ADDED</Header>
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row className="contentRow" verticalAlign="middle">
+            <Grid.Column className="contentColumn">
+              <AssetList
+                assets={
+                  !filteredAssets ? sampleAssets.slice(0, 6) : filteredAssets
+                }
+                loading={isLoading}
+                topAssets={false}
+                cardWidth={width}
+                setWidth={this.setWidth}
+              />
+            </Grid.Column>
           </Grid.Row>
           <Grid.Row className="contentRow">
-            <AssetList
-              assets={!filteredAssets ? sampleAssets.slice(0, 6) : filteredAssets}
-              loading={isLoading}
-              topAssets={false} />
+            <Grid.Column className="contentColumn">
+              <Footer />
+            </Grid.Column>
           </Grid.Row>
         </Sidebar>
       </div>
@@ -165,8 +202,12 @@ class MainPage extends Component {
   }
 }
 
-AssetList.propTypes = {
-  assets: PropTypes.array
+MainPage.propTypes = {
+  assets: PropTypes.array,
+  size: PropTypes.shape({
+    width: PropTypes.number.isRequired,
+    height: PropTypes.number.isRequired
+  })
 };
 
 export default MainPage;

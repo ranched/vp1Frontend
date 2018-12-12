@@ -1,37 +1,89 @@
-import React, { Component } from 'react';
-import { Card } from 'semantic-ui-react';
-import AssetCard from './AssetCard';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import {
+  Card,
+  Segment,
+  Container,
+  Image,
+  Divider,
+  List
+} from "semantic-ui-react";
+import AssetCard from "./AssetCard";
+import Footer from "./Footer";
+import logo from "../assets/images/oracle/csh-logo-1.png";
+import PropTypes from "prop-types";
+
+const RecentsFooter = () => (
+  <Segment vertical className="recentsFooter">
+    <Divider section />
+    <Container textAlign="center">
+      <Image centered size="small" src={logo} />
+      <List
+        horizontal
+        divided
+        link
+        size="small"
+        style={{ marginBottom: "0px" }}
+      >
+        <List.Item as="a" href="#" className="footer-text">
+          Site Map
+        </List.Item>
+        <List.Item as="a" href="#" className="footer-text">
+          Contact Us
+        </List.Item>
+      </List>
+      <br />
+      <List horizontal divided link size="small" style={{ marginTop: "0px" }}>
+        <List.Item as="a" href="#" className="footer-text">
+          Terms and Conditions
+        </List.Item>
+        <List.Item as="a" href="#" className="footer-text">
+          Privacy Policy
+        </List.Item>
+      </List>
+    </Container>
+  </Segment>
+);
 
 class AssetList extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      width: null,
+      widthSet: false
+    };
   }
 
-  componentDidMount = () => {
+  componentDidMount = () => {};
 
-  }
+  setWidth = width => {
+    this.props.setWidth(width);
+  };
 
   render() {
-    var { assets, loading, topAssets } = this.props;
-    if (topAssets) {
-      return (
-        <Card.Group itemsPerRow={4}>
-          {assets.map(asset => (
-            <AssetCard asset={asset} key={asset.scrm_id} loading={loading} />
-          ))}
-        </Card.Group>
-      )
-    } else {
-      return (
-        <Card.Group itemsPerRow={1} style={{ overflowY: "scroll", padding: "0px 10px 10px 20px", marginBottom: "50px" }}>
-          {assets.map(asset => (
-            <AssetCard asset={asset} key={asset.scrm_id} loading={loading} />
-          ))}
-        </Card.Group>
-      )
-    }
+    var { assets, loading, topAssets, cardWidth } = this.props;
+    var assetArr = [];
+    assets.forEach(asset => {
+      assetArr.push(
+        <AssetCard
+          asset={asset}
+          key={asset.scrm_id}
+          loading={loading}
+          topAsset={topAssets}
+          centered
+          cardWidth={cardWidth}
+          setWidth={this.setWidth}
+        />
+      );
+    });
+    if (!topAssets) assetArr.push(<RecentsFooter />);
+    return (
+      <Card.Group
+        itemsPerRow={topAssets ? 4 : 1}
+        className={topAssets ? "topAssetsList" : "recentAssets"}
+      >
+        {assetArr}
+      </Card.Group>
+    );
   }
 }
 

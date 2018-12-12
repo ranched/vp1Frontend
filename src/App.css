@@ -16,39 +16,223 @@
   }
 }
 
-.grid.ui.overlay.right.wide.visible.sidebar {
-  margin-top: 75px !important;
-  padding-bottom: 75px !important;
+.grid.ui.overlay.right.visible.sidebar {
+  margin-top: 80px !important;
+  padding-bottom: 50px !important;
+  padding-top: 80px !important;
+  height: auto !important;
   overflow-y: hidden !important;
+  z-index: 3 !important;
+  bottom: 0 !important;
+}
+
+.row.contentRow {
+  height: 100% !important;
+  overflow-y: hidden !important;
+  /* position: absolute !important; */
+}
+
+.column.contentColumn {
+  height: 100% !important;
+  overflow: hidden !important;
+}
+
+.ui.cards.recentAssets {
+  height: 100% !important;
+  overflow-x: hidden !important;
+  overflow-y: scroll;
+  justify-content: center;
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
 }
 
 .topAssets {
-  margin-right: 350px !important;
-  padding-top: 25px !important;
+  /* margin-right: 300px !important; */
+  /* margin-left: 0px !important; */
+  margin: 80px 300px 0px 0px !important;
+  padding-left: 10rem !important;
+  /* padding-top: 80px !important; */
+  /* padding: 80px 10rem 0px 10rem !important; */
+  justify-content: center !important;
+}
+
+.topAssetsList {
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+  padding-left: 50px !important;
+  padding-right: 50px !important;
+  justify-content: center !important;
 }
 
 .topHeader {
   padding-bottom: 20px !important;
+  font-size: 35px !important;
 }
 
 .headerRow {
   overflow-y: hidden !important;
   text-align: center !important;
   align-items: center !important;
-  padding-top: 20px !important;
+  padding-top: 0px !important;
 }
 
-.contentRow {
-  height: 100%;
+.ui.container.App-footer {
+  /* margin: 28px 14px 0px 14px !important; */
+  /* width: 100vw !important; */
+  margin: 0px 300px 0px 0px !important;
+  /* padding: 20px !important; */
+  background-color: #f7f7f7 !important;
+  color: black !important;
 }
 
-.App-footer {
-  margin: 28px -14px 0px -14px !important;
-  padding: 20px !important;
-  background-color: #F7F7F7 !important;
+.recentsFooter {
+  padding: 0px !important;
+  background-color: #f7f7f7 !important;
   color: black !important;
 }
 
 .footer-text {
   color: black;
+}
+
+.assetsCard {
+  margin: 10px;
+}
+
+.assetPage {
+  margin-top: 80px !important;
+  height: 100% !important;
+  padding: 5rem 15rem !important;
+}
+
+.ui.container.assetPageGrid {
+  margin: 50px 125px 0px 125px !important;
+  width: calc(1127px + 5rem) !important;
+}
+
+.ui.segments {
+  border: none !important;
+  border-width: 0px !important;
+  border-radius: 0px !important;
+  padding: 0px !important;
+  box-shadow: none !important;
+  margin-bottom: 0px !important;
+  margin-top: 0px !important;
+}
+
+.ui.segment {
+  padding: 35px !important;
+  border: none !important;
+}
+
+.assetContent.ui.segments {
+  padding-bottom: 20px !important;
+}
+
+.primaryColumn {
+  padding-top: 50px !important;
+  padding-bottom: 50px !important;
+  padding-right: 24px;
+}
+
+.secondaryColumn {
+  padding-top: 50px !important;
+  padding-bottom: 50px !important;
+  padding-left: 24px;
+}
+
+.ui.rail.assetRail {
+  left: -60px !important;
+  right: 0px !important;
+  top: -20px !important;
+  /* padding-top: 15px !important; */
+  overflow: visible !important;
+}
+
+.cardContent {
+  font-size: 14px !important;
+  padding: 7px 7px 0px 7px !important;
+  white-space: normal !important;
+  width: 100% !important;
+}
+
+.cardTitle {
+  color: rgb(17, 17, 17) !important;
+  font-size: 14px !important;
+  line-height: 16px !important;
+}
+
+.cardMeta {
+  font-size: 13px !important;
+}
+
+div .ui.input.NavSearch > input {
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+  /* margin-top: 8px !important;
+  margin-bottom: 8px !important; */
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: white !important;
+}
+div .ui.input.NavSearch > input::selection {
+  color: black !important;
+  background: rgb(255, 255, 255) !important;
+}
+div .ui.input.NavSearch > button {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: white !important;
+  padding: 5px 30px !important;
+}
+
+.search.link.icon {
+  color: white !important;
+  width: 2em !important;
+  height: 2em !important;
+  border: 2px solid rgba(255, 255, 255, 0.25) !important;
+  margin: 0 !important;
+  position: absolute !important;
+  top: 50% !important;
+  -ms-transform: translateY(-50%) !important;
+  transform: translateY(-50%) !important;
+}
+
+.ui.fluid.container.createAsset {
+  /* margin: 80px 125px 80px 125px !important; */
+  /* background-color: #f7f7f7 !important; */
+  height: 100% !important;
+}
+
+.ui.segment.formSegment {
+  margin: 80px 320px !important;
+  padding: 40px 80px !important;
+  height: 100 !important;
+}
+
+form.ui.form.createForm > div.field > div.ui.fluid.multiple.scrolling.dropdown {
+  min-height: 38px !important;
+  padding: 2px 0px !important;
+  border: 1px solid rgba(34, 36, 38, 0.15) !important;
+}
+
+a.ui.label {
+  padding: 6px 9px !important;
+  margin: 2px 2px !important;
+}
+
+i.dropdown.icon {
+  padding: 11px !important;
+}
+
+a.ui.big.label.profileAvatar {
+  /* padding: 0px 9px !important; */
+  font-size: 14px !important;
+}
+
+a.ui.big.label.profileAvatar > img {
+  height: 40px !important;
+  width: 40px !important;
+}
+
+span.createNew {
+  font-size: 15px !important;
 }

@@ -73,34 +73,42 @@ class Filters extends Component {
 
   render() {
     var { industries, cloudServices, pillars, hubsters, keywords } = this.state;
-    var { update } = this.props;
+    var { update, filter } = this.props;
     return (
       <div className="Filters" style={styles.filters}>
         <Dropdown
-          style={styles.dropdown}
           clearable multiple search selection
-          value={industries} onChange={this.updateIndustries}
+          onClose={() => filter(this.state)}
+          style={styles.dropdown}
+          value={industries}
+          onChange={this.updateIndustries}
           options={filterOptions.industries}
           placeholder="Industries"
         />
         <Dropdown
-          style={styles.dropdown}
           clearable multiple search selection
-          value={cloudServices} onChange={this.updateCloudServices}
+          onClose={() => filter(this.state)}
+          style={styles.dropdown}
+          value={cloudServices}
+          onChange={this.updateCloudServices}
           options={filterOptions.cloudServices}
           placeholder="Cloud Services"
         />
         <Dropdown
-          style={styles.dropdown}
           clearable multiple search selection
-          value={pillars} onChange={this.updatePillars}
+          onClose={() => filter(this.state)}
+          style={styles.dropdown}
+          value={pillars}
+          onChange={this.updatePillars}
           options={filterOptions.pillars}
           placeholder="Pillars"
         />
         <Dropdown
-          style={styles.dropdown}
           clearable multiple search selection
-          value={hubsters} onChange={this.updateHubsters}
+          onClose={() => filter(this.state)}
+          style={styles.dropdown}
+          value={hubsters}
+          onChange={this.updateHubsters}
           options={filterOptions.cloudServices}
           disabled
           placeholder="Hubsters"

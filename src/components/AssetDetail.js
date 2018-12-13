@@ -479,12 +479,8 @@ class AssetDetail extends Component {
           </Grid.Column>
         </Grid>
       </Container>
-<<<<<<< HEAD
-    );
-=======
 
     )
->>>>>>> filterChanges
   }
 }
 

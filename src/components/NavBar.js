@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, Menu, Input, Icon, Label, Dropdown } from "semantic-ui-react";
+import { Image, Menu, Input, Icon, Label } from "semantic-ui-react";
 import { Link /* , withRouter */ } from "react-router-dom";
 import logo from "../assets/images/oracle/logo-red.png";
 import profilePic from "../assets/images/profilepic.png";
@@ -56,7 +56,7 @@ class NavBar extends Component {
         }}
       >
         <Menu.Item
-          as="a"
+
           header
           style={{
             textTransform: "uppercase",
@@ -92,15 +92,14 @@ class NavBar extends Component {
                 isLoading ? (
                   <Icon name="spinner" loading circular size="small" />
                 ) : (
-                  <Icon name="search" circular link size="small" />
-                )
+                    <Icon name="search" circular link size="small" />
+                  )
               }
               placeholder="Search assets..."
               className="NavSearch"
             />
           </Menu.Item>
           <Menu.Item
-            as="a"
             style={{
               fontSize: "20px"
             }}

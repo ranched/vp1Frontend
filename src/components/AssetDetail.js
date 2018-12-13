@@ -7,7 +7,6 @@ import {
   Image,
   Item,
   Segment,
-  SegmentGroup,
   List,
   Icon,
   Embed,
@@ -85,13 +84,13 @@ class AssetDetail extends Component {
   getUseCases = asset => {
     console.log(asset.use_case);
     var items = [];
-    var useCases = asset.use_case.split(/\s*\(\d+\)\s+/g);
+    var useCases = asset.use_case ? asset.use_case.split(/\s*\(\d+\)\s+/g) : [''];
     useCases.splice(0, 1);
     useCases = useCases.filter(useCase => useCase !== "");
     console.log(useCases);
-    useCases.forEach(useCase => {
+    useCases.forEach((useCase, index) => {
       items.push(
-        <List.Item as="li">
+        <List.Item as="li" key={index} >
           <List.Content>
             <List.Description>{useCase}</List.Description>
           </List.Content>

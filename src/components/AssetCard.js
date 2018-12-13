@@ -20,13 +20,6 @@ var styles = {
   }
 };
 
-const trimWithEllipis = str => {
-  if (str.length > 30) {
-    str = str.slice(0, 30) + "...";
-  }
-  return str;
-};
-
 class AssetCard extends Component {
   constructor(props) {
     super(props);
@@ -42,12 +35,12 @@ class AssetCard extends Component {
   };
   componentDidUpdate = () => {
     var { asset, setWidth, size, loading, topAsset } = this.props;
-    if (!loading && topAsset && !this.state.widthSet) {
-      console.log("topAsset card width getting set ...", size);
-      console.log(asset);
-      setWidth(size.width);
-      this.setState({ widthSet: true });
-    }
+    // if (!loading && topAsset && !this.state.widthSet) {
+    //   console.log("topAsset card width getting set ...", size);
+    //   console.log(asset);
+    //   setWidth(size.width);
+    //   this.setState({ widthSet: true });
+    // }
 
     /* componentWillReceiveProps = nextProps => {
       var { topAsset, cardWidth } = this.props;
@@ -104,6 +97,7 @@ class AssetCard extends Component {
     }
     var pathname = "/assets/" + asset.scrm_id;
     var state = { asset };
+    console.log(asset);
     var publishDate = asset.publish_date || asset.createdOn;
     return (
       <Card

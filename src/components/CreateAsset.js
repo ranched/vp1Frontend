@@ -14,12 +14,6 @@ import Dropzone from "react-dropzone";
 import dropOptions from "../sample/dropOptions";
 import * as api from "../services/digitalAssets";
 
-const styles = {
-  mainAssets: {
-    margin: "20px"
-  }
-};
-
 const capitalize = word => {
   if (word === "and") return word;
   return word.charAt(0).toUpperCase() + word.slice(1);
@@ -190,7 +184,7 @@ class CreateAssets extends Component {
     const thumbs = files.map(file => (
       <div style={thumb} key={file.name}>
         <div style={thumbInner}>
-          <img src={file.preview} style={img} />
+          <img src={file.preview} alt='upload preview' style={img} />
         </div>
       </div>
     ));
@@ -299,7 +293,7 @@ class CreateAssets extends Component {
                 name="useCase"
                 placeholder="Please enter a brief description"
                 onInput={this.handleChange}
-                /* value={this.state.useCase} */
+              /* value={this.state.useCase} */
               />
             </Form.Field>
             <Form.Field>
@@ -308,7 +302,7 @@ class CreateAssets extends Component {
                 name="description"
                 placeholder="Please enter a brief description"
                 onInput={this.handleChange}
-                /* value={this.state.description} */
+              /* value={this.state.description} */
               />
             </Form.Field>
             <Form.Field>

@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { Grid, Header, Sidebar } from 'semantic-ui-react';
-import sizeMe from "react-sizeme";
+//import sizeMe from "react-sizeme";
 import Filters from './Filters';
 import AssetList from './AssetList';
 import AssetDetail from './AssetDetail';
@@ -143,21 +143,46 @@ class MainPage extends Component {
     var isLoading = !assets;
     return (
       <div className="Main" style={styles.mainAssets}>
-        <Sidebar.Pushable as={Grid} className="topAssets" style={{ paddingTop: "50px", margin: "0px" }}>
-          <Sidebar.Pusher>
-            <Filters filter={this.filterAssets} update={this.updateAssets} />
+        <Sidebar.Pushable
+          as={Grid}
+          style={{ paddingTop: "75px", margin: "0px" }}
+        >
+          <Sidebar.Pusher
+            className="topAssets" /*  style={{ padding: "0px" }} */
+          >
+            {/* <Filters update={this.updateAssets} />
+            <Header
+              as="h1"
+              className="topHeader"
+              style={{ textAlign: "center", paddingBottom: "50px" }}
+            >
+              TOP ASSETS
+            </Header>
+            <AssetList
+              assets={
+                !filteredAssets ? sampleAssets.slice(0, 6) : filteredAssets
+              }
+              loading={isLoading}
+              topAssets={true}
+              cardWidth={width}
+              setWidth={this.setWidth}
+            /> */}
             <Router>
               <Switch>
 
                 <Route exact path='/assets' render={
                   (props) => {
                     return [
+                      <Filters key='filters' filter={this.filterAssets} update={this.updateAssets} />,
                       <Header as='h1' key='header' className="topHeader" style={{ textAlign: "center", paddingBottom: "50px" }}>TOP ASSETS</Header>,
                       <AssetList
                         key='assetList'
                         assets={!filteredAssets ? sampleAssets.slice(0, 6) : filteredAssets}
                         loading={isLoading}
-                        topAssets={true} />
+                        topAssets={true}
+                        cardWidth={width}
+                        setWidth={this.setWidth}
+                      />
                     ]
                   }
                 }
@@ -165,17 +190,16 @@ class MainPage extends Component {
                 <Route path={"/assets/:assetId"} render={props => <AssetDetail {...props} />} />
                 <Route path='*' render={props => <p>404</p>} />
               </Switch>
-            </Router>
-
-            <Footer />
-          </Sidebar.Pusher>
+            </Router>            <Footer />
+          </Sidebar.Pusher>{" "}
         </Sidebar.Pushable>
 
-        <Sidebar as={Grid}
-          inverted visible
-          animation='overlay'
-          direction='right'
-          width='wide'
+        <Sidebar
+          as={Grid}
+
+          visible
+          animation="overlay"
+          direction="right"
           style={{
             backgroundColor: "#F7F7F7",
             justifyContent: "center",
@@ -190,8 +214,8 @@ class MainPage extends Component {
           <Grid.Row className="contentRow" verticalAlign="middle">
             <Grid.Column className="contentColumn">
               <AssetList
-                assets={
-                  !filteredAssets ? sampleAssets.slice(0, 6) : filteredAssets
+                assets={sampleAssets.slice(0, 6)
+                  //!filteredAssets ? sampleAssets.slice(0, 6) : filteredAssets
                 }
                 loading={isLoading}
                 topAssets={false}

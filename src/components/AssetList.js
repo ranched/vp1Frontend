@@ -8,12 +8,11 @@ import {
   List
 } from "semantic-ui-react";
 import AssetCard from "./AssetCard";
-import Footer from "./Footer";
 import logo from "../assets/images/oracle/csh-logo-1.png";
 import PropTypes from "prop-types";
 
 const RecentsFooter = () => (
-  <Segment vertical className="recentsFooter">
+  <Segment vertical className="recentsFooter" >
     <Divider section />
     <Container textAlign="center">
       <Image centered size="small" src={logo} />
@@ -53,7 +52,7 @@ class AssetList extends Component {
     };
   }
 
-  componentDidMount = () => {};
+  componentDidMount = () => { };
 
   setWidth = width => {
     this.props.setWidth(width);
@@ -75,7 +74,7 @@ class AssetList extends Component {
         />
       );
     });
-    if (!topAssets) assetArr.push(<RecentsFooter />);
+    if (!topAssets) assetArr.push(<RecentsFooter key="recentsFooter" />);
     return (
       <Card.Group
         itemsPerRow={topAssets ? 4 : 1}

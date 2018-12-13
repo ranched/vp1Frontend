@@ -77,34 +77,38 @@ class Filters extends Component {
     return (
       <div className="Filters" style={styles.filters}>
         <Dropdown
-          onClose={() => { filter(this.state) }}
+          clearable multiple search selection
+          onClose={() => filter(this.state)}
           style={styles.dropdown}
-          clearable multiple search selection closeOnChange
-          value={industries} onChange={this.updateIndustries}
+          value={industries}
+          onChange={this.updateIndustries}
           options={filterOptions.industries}
           placeholder="Industries"
         />
         <Dropdown
-          onClose={() => { filter(this.state) }}
+          clearable multiple search selection
+          onClose={() => filter(this.state)}
           style={styles.dropdown}
-          clearable multiple search selection closeOnChange
-          value={cloudServices} onChange={this.updateCloudServices}
+          value={cloudServices}
+          onChange={this.updateCloudServices}
           options={filterOptions.cloudServices}
           placeholder="Cloud Services"
         />
         <Dropdown
-          onClose={() => { filter(this.state) }}
+          clearable multiple search selection
+          onClose={() => filter(this.state)}
           style={styles.dropdown}
-          clearable multiple search selection closeOnChange
-          value={pillars} onChange={this.updatePillars}
+          value={pillars}
+          onChange={this.updatePillars}
           options={filterOptions.pillars}
           placeholder="Pillars"
         />
         <Dropdown
-          onClose={() => { filter(this.state) }}
+          clearable multiple search selection
+          onClose={() => filter(this.state)}
           style={styles.dropdown}
-          clearable multiple search selection closeOnChange
-          value={hubsters} onChange={this.updateHubsters}
+          value={hubsters}
+          onChange={this.updateHubsters}
           options={filterOptions.cloudServices}
           disabled
           placeholder="Hubsters"

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import AssetDetail from './components/AssetDetail';
+//import AssetDetail from './components/AssetDetail';
 import MainPage from './components/MainPage';
 import CreateAsset from './components/CreateAsset';
 import ScrollToTop from './components/ScrollToTop';
@@ -13,6 +13,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+    this.props = props;
   }
 
   componentDidMount = () => { }
@@ -24,8 +25,8 @@ class App extends Component {
           <NavBar />
           <Switch className="App">
             <Route exact path='/' render={(props) => <Redirect to="/assets" {...props} />} />
-            <Route exact path="/assets" render={(props) => <MainPage {...props} />} />
-            <Route path='/assets/:assetId' render={(props) => <AssetDetail {...props} />} />
+            <Route path="/assets" render={(props) => <MainPage {...props} />} />
+            {/*<Route path='/assets/:assetId' render={(props) => <AssetDetail {...props} />} />*/}
             <Route path="/create" render={(props) => <CreateAsset {...props} />} />
           </Switch>
           {/*           <Header />

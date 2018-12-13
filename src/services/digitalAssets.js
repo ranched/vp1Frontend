@@ -58,7 +58,6 @@ export const getAllAssets = () => {
           .then(result => 'data:image/png;base64,' + result)
           .then(arch_diagram => {
             asset['arch_diagram'] = arch_diagram;
-            console.log(asset);
             return asset;
           })
           .catch(error => {

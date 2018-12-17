@@ -95,6 +95,8 @@ class CreateAssets extends Component {
       repo: "",
       submitted: false,
       scrmId: "",
+      scrmObjs: null,
+      scrmDropOptions: [],
       title: "",
       userEmail: "",
       useCase: "",
@@ -173,6 +175,46 @@ class CreateAssets extends Component {
       )
     });
   };
+  
+  // maps over scrm objects returned from the server to create an array for the scrm dropdown options
+  createDropOptions = () => {
+    if(this.state.scrmObjs){
+      let scrmDropOptions = this.state.scrmObjs.map(scrm => ({ text: `${scrm.scrm_id} - ${scrm.account_name}` , value: scrm.scrm_id }))
+      this.setState({ scrmDropOptions })
+    }
+  }
+
+  // Calls backend for scrm data not associated with an asset in the asset portal
+  // on response it updates the state with the response data and creates drop down options for scrm value
+  fetchScrmsAndUpdateState = () => {
+    api.getAvailableScrms()
+      .then(scrmObjs => {
+        // update state with new scrm opbjects and then use that data to create dropdown values
+        this.setState(previousState => {
+          return { scrmObjs }
+        }, this.createDropOptions);
+      })
+      .catch(error => console.log(error));
+  };
+
+  updateScrmId = (e, { name, value }) => {
+    let scrmRecord = this.state.scrmObjs.filter(record => record.scrm_id === value)[0];
+    this.setState(previousState => {
+      debugger;
+      return {
+        scrm_id: value,
+        oppId: scrmRecord.opp_id,
+        customer: scrmRecord.account_name,
+        title: scrmRecord.engagement_name,
+        description: scrmRecord.description,
+
+      }
+    }) 
+ }
+
+  componentDidMount = () => {
+    this.fetchScrmsAndUpdateState();
+  }
 
   componentWillUnmount = () => {
     // Make sure to revoke the data uris to avoid memory leaks
@@ -217,10 +259,17 @@ class CreateAssets extends Component {
             >
               <Form.Field required>
                 <label>SCRM ID</label>
-                <Input
+                {/* <Input
                   name="scrmId"
                   value={this.state.scrmId}
                   onChange={this.handleChange}
+                /> */}
+                <Dropdown
+                  onChange={this.updateScrmId}
+                  options={this.state.scrmDropOptions}
+                  placeholder='Select SCRM ID'
+                  selection
+                  value={this.state.scrm_id}
                 />
               </Form.Field>
               <Form.Field>
@@ -296,7 +345,7 @@ class CreateAssets extends Component {
                   name="useCase"
                   placeholder="Please enter a brief description"
                   onInput={this.handleChange}
-                /* value={this.state.useCase} */
+                  value={this.state.useCase}
                 />
               </Form.Field>
               <Form.Field>
@@ -305,7 +354,7 @@ class CreateAssets extends Component {
                   name="description"
                   placeholder="Please enter a brief description"
                   onInput={this.handleChange}
-                /* value={this.state.description} */
+                  value={this.state.description}
                 />
               </Form.Field>
               <Form.Field>

@@ -147,6 +147,13 @@ export const getPillars = (scrm_id) => {
     .catch(error => { console.log(error); throw Error(error); });
 }
 
+export const getAvailableScrms = () => {
+  let reqUrl = `${apiUrl}scrm/distinct`;
+  return axios.get(reqUrl, { headers, auth })
+    .then(result => result.data.items)
+    .catch(error => { console.log(error); })
+}
+
 export const postAsset = (assetObj) => {
   var reqUrl = apiUrl + 'assets';
   return axios.post(reqUrl, assetObj, { headers, auth })

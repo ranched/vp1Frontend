@@ -2,6 +2,8 @@
 import React, { Component } from 'react';
 import { Grid, Header, Sidebar } from 'semantic-ui-react';
 //import sizeMe from "react-sizeme";
+import ScrollToTop from './ScrollToTop';
+import NavBar from './NavBar';
 import Filters from './Filters';
 import AssetList from './AssetList';
 import AssetDetail from './AssetDetail';
@@ -60,7 +62,7 @@ class MainPage extends Component {
       filterOptions: {},
       filters: {},
       filteredAssets: null,
-      recents: null,
+      recentAssets: null,
       url: props.match.url,
       path: props.match.path,
       width: null,
@@ -77,12 +79,19 @@ class MainPage extends Component {
         //assets = [...sampleAssets, ...assets];
         assets = sortAssetsByViewCount(assets);
         var filteredAssets = [...assets];
-        this.setState({ assets, recents, filteredAssets });
+        this.setState({ assets, filteredAssets });
       })
       .catch(error => console.log(error));
   };
 
+  fetchRecentAssetsAndUpdateState = () => {
+    api.getRecentAssets()
+      .then(assets => this.setState({recentAssets: assets}) )
+      .catch(error => console.log(error))
+  }
+
   componentDidMount = () => {
+    this.fetchRecentAssetsAndUpdateState();
     this.fetchAllAssetsAndUpdateState();
   };
 
@@ -90,18 +99,20 @@ class MainPage extends Component {
   this.setState({ recentsHeight }); */
 
 
-  updateAssets = (filters) => {
-    console.log(`updateAssets fired with ${JSON.stringify(filters)}`)
+  updateAssets = (searchTermsArray) => {
+    console.log(`updateAssets fired with ${JSON.stringify(searchTermsArray)}`)
 
-    if (!filters.keywords[0]) {
-      console.log(`no keywords to filter by, setting to a space character`)
-      filters.keywords[0] = ' '
+    if (!searchTermsArray[0]) {
+      console.log(`no terms to search by, setting to a space character`)
+      searchTermsArray[0] = ' '
     }
-    console.log(`fetching assets by keywords`)
-    fetchSearchedAssets(filters.keywords)
+    console.log(`fetching assets by search terms`)
+    fetchSearchedAssets(searchTermsArray)
       .then(assets => {
-        this.setState({ assets });
-        this.filterAssets(filters)
+        this.setState(
+          previousState => ( { assets: assets } ), 
+          () => this.filterAssets(this.state.filters) 
+        );
       })
   }
 
@@ -142,95 +153,98 @@ class MainPage extends Component {
     var { assets, filteredAssets, width } = this.state;
     var isLoading = !assets;
     return (
-      <div className="Main" style={styles.mainAssets}>
-        <Sidebar.Pushable
-          as={Grid}
-          style={{ paddingTop: "75px", margin: "0px" }}
-        >
-          <Sidebar.Pusher
-            className="topAssets" /*  style={{ padding: "0px" }} */
+      <ScrollToTop>
+        <div className="Main" style={styles.mainAssets}>
+          <NavBar search={this.updateAssets} />
+          <Sidebar.Pushable
+            as={Grid}
+            style={{ paddingTop: "75px", margin: "0px" }}
           >
-            {/* <Filters update={this.updateAssets} />
-            <Header
-              as="h1"
-              className="topHeader"
-              style={{ textAlign: "center", paddingBottom: "50px" }}
+            <Sidebar.Pusher
+              /*  style={{ padding: "0px" }} */
             >
-              TOP ASSETS
-            </Header>
-            <AssetList
-              assets={
-                !filteredAssets ? sampleAssets.slice(0, 6) : filteredAssets
-              }
-              loading={isLoading}
-              topAssets={true}
-              cardWidth={width}
-              setWidth={this.setWidth}
-            /> */}
-            <Router>
-              <Switch>
-
-                <Route exact path='/assets' render={
-                  (props) => {
-                    return [
-                      <Filters key='filters' filter={this.filterAssets} update={this.updateAssets} />,
-                      <Header as='h1' key='header' className="topHeader" style={{ textAlign: "center", paddingBottom: "50px" }}>TOP ASSETS</Header>,
-                      <AssetList
-                        key='assetList'
-                        assets={!filteredAssets ? sampleAssets.slice(0, 6) : filteredAssets}
-                        loading={isLoading}
-                        topAssets={true}
-                        cardWidth={width}
-                        setWidth={this.setWidth}
-                      />
-                    ]
-                  }
-                }
-                />
-                <Route path={"/assets/:assetId"} render={props => <AssetDetail {...props} />} />
-                <Route path='*' render={props => <p>404</p>} />
-              </Switch>
-            </Router>            <Footer />
-          </Sidebar.Pusher>{" "}
-        </Sidebar.Pushable>
-
-        <Sidebar
-          as={Grid}
-
-          visible
-          animation="overlay"
-          direction="right"
-          style={{
-            backgroundColor: "#F7F7F7",
-            justifyContent: "center",
-            width: "300px"
-          }}
-        >
-          <Grid.Row className="headerRow">
-            <Grid.Column>
-              <Header as="h1">RECENTLY ADDED</Header>
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row className="contentRow" verticalAlign="middle">
-            <Grid.Column className="contentColumn">
+              {/* <Filters update={this.updateAssets} />
+              <Header
+                as="h1"
+                className="topHeader"
+                style={{ textAlign: "center", paddingBottom: "50px" }}
+              >
+                TOP ASSETS
+              </Header>
               <AssetList
-                assets={sampleAssets.slice(0, 6)
-                  //!filteredAssets ? sampleAssets.slice(0, 6) : filteredAssets
+                assets={
+                  !filteredAssets ? sampleAssets.slice(0, 6) : filteredAssets
                 }
                 loading={isLoading}
-                topAssets={false}
+                topAssets={true}
                 cardWidth={width}
                 setWidth={this.setWidth}
-              />
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row className="contentRow">
-            <Grid.Column className="contentColumn">
-              <Footer />
-            </Grid.Column>
-          </Grid.Row>
-        </Sidebar>
-      </div>
+              /> */}
+                <Switch>
+
+                  <Route exact path='/assets' render={
+                    (props) => {
+                      return <div className="topAssets">
+                        <Filters filter={this.filterAssets} update={this.updateAssets} />
+                        <Header as='h1' className="topHeader" style={{ textAlign: "center", paddingBottom: "50px" }}>TOP ASSETS</Header>
+                        <AssetList
+                          assets={!filteredAssets ? sampleAssets.slice(0, 6) : filteredAssets}
+                          loading={isLoading}
+                          topAssets={true}
+                          cardWidth={width}
+                          setWidth={this.setWidth}
+                        />
+                        <Sidebar
+                          as={Grid}
+
+                          visible
+                          animation="overlay"
+                          direction="right"
+                          style={{
+                            backgroundColor: "#F7F7F7",
+                            justifyContent: "center",
+                            width: "300px"
+                          }}
+                        >
+                          <Grid.Row className="headerRow">
+                            <Grid.Column>
+                              <Header as="h1">RECENTLY ADDED</Header>
+                            </Grid.Column>
+                          </Grid.Row>
+                          <Grid.Row className="contentRow" verticalAlign="middle">
+                            <Grid.Column className="contentColumn">
+                                <AssetList
+                                  assets={!this.state.recentAssets ? sampleAssets.slice(0, 6) : this.state.recentAssets}
+                                  loading={isLoading}
+                                  topAssets={false}
+                                  cardWidth={width}
+                                  setWidth={this.setWidth}
+                                  location={props.location}
+                                />
+                            </Grid.Column>
+                          </Grid.Row>
+                          <Grid.Row className="contentRow">
+                            <Grid.Column className="contentColumn">
+                              <Footer />
+                            </Grid.Column>
+                          </Grid.Row>
+                        </Sidebar>
+                      </div>
+                    }
+                  }
+                  />
+                  <Route path={"/assets/:assetId"} render={props => <AssetDetail {...props} />} />
+                  <Route path='*' render={props => <p>404</p>} />
+                </Switch>
+                <div className="footer">
+                  <Footer />
+                </div>
+            </Sidebar.Pusher>{" "}
+          </Sidebar.Pushable>
+
+
+        </div>
+      </ScrollToTop>
     );
   }
 }

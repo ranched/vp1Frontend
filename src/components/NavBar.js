@@ -1,9 +1,13 @@
 import React, { Component } from "react";
-import { Image, Menu, Input, Icon, Label } from "semantic-ui-react";
+import { Image, Menu, Input, Icon, Label, Form } from "semantic-ui-react";
 import { Link /* , withRouter */ } from "react-router-dom";
 import logo from "../assets/images/oracle/logo-red.png";
-import profilePic from "../assets/images/profilepic.png";
+import profilePic from "../assets/images/userIcon.png";
 import Stats from "./Stats";
+
+const splitStringOnSpaces = str => str.split(' ');
+
+const removeEmptyStrings = arr => arr.filter(item => item !== "");
 
 class NavBar extends Component {
   constructor(props) {
@@ -12,7 +16,8 @@ class NavBar extends Component {
     this.state = {
       isOpen: true,
       value: "",
-      isLoading: false
+      isLoading: false,
+      searchTerms: []
     };
   }
 
@@ -40,9 +45,11 @@ class NavBar extends Component {
     }, 300);
   };
 
-  render() {
-    var { isLoading } = this.state;
+  updateSearchTerms = (e, { name, value }) => { this.setState({ searchTerms: splitStringOnSpaces(value) }) }
 
+  render() {
+    var { isLoading, searchTerms } = this.state;
+    var { search } = this.props;
     return (
       <Menu
         fixed="top"
@@ -85,6 +92,8 @@ class NavBar extends Component {
               marginRight: "8px"
             }}
           >
+            <Form onSubmit= {() => search( removeEmptyStrings(this.state.searchTerms) )}>
+
             <Input
               inverted
               /* loading */
@@ -92,12 +101,15 @@ class NavBar extends Component {
                 isLoading ? (
                   <Icon name="spinner" loading circular size="small" />
                 ) : (
-                    <Icon name="search" circular link size="small" />
+                    <Icon name="search" disabled circular link size="small" />
                   )
               }
               placeholder="Search assets..."
               className="NavSearch"
+              name="searchTerms"
+              value={searchTerms.join(' ')} onChange={this.updateSearchTerms}
             />
+            </Form>
           </Menu.Item>
           <Menu.Item
             style={{

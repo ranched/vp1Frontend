@@ -78,7 +78,7 @@ class Filters extends Component {
       <div className="Filters" style={styles.filters}>
         <Dropdown
           clearable multiple search selection
-          onClose={() => filter(this.state)}
+          /* onClose={() => filter(this.state)} */
           style={styles.dropdown}
           value={industries}
           onChange={this.updateIndustries}
@@ -87,7 +87,7 @@ class Filters extends Component {
         />
         <Dropdown
           clearable multiple search selection
-          onClose={() => filter(this.state)}
+          /* onClose={() => filter(this.state)} */
           style={styles.dropdown}
           value={cloudServices}
           onChange={this.updateCloudServices}
@@ -96,14 +96,14 @@ class Filters extends Component {
         />
         <Dropdown
           clearable multiple search selection
-          onClose={() => filter(this.state)}
+          /* onClose={() => filter(this.state)} */
           style={styles.dropdown}
           value={pillars}
           onChange={this.updatePillars}
           options={filterOptions.pillars}
           placeholder="Pillars"
         />
-        <Dropdown
+        {/* <Dropdown
           clearable multiple search selection
           onClose={() => filter(this.state)}
           style={styles.dropdown}
@@ -112,14 +112,14 @@ class Filters extends Component {
           options={filterOptions.cloudServices}
           disabled
           placeholder="Hubsters"
-        />
-        <Input
+        /> */}
+        {/* <Input
           name="keywords"
           value={keywords.join(' ')} onChange={this.updateKeywords}
           placeholder="Keywords"
-        />
-        <Button color="red" onClick={() => update(this.state)}> Update </Button>
+        /> */}
         <Button onClick={() => this.clearFilters()}> Clear </Button>
+        <Button color="red" onClick={() => filter(this.state)}> Update </Button>
       </div>
     );
   }

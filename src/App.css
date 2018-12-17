@@ -76,13 +76,19 @@
   padding-top: 0px !important;
 }
 
+.footer {
+  margin: 0px 300px 0px 0px !important;
+}
 .ui.container.App-footer {
   /* margin: 28px 14px 0px 14px !important; */
   /* width: 100vw !important; */
-  margin: 0px 300px 0px 0px !important;
   /* padding: 20px !important; */
   background-color: #f7f7f7 !important;
   color: black !important;
+}
+
+.ui.verticle.segment {
+  margin-right: 300px !important;
 }
 
 .recentsFooter {

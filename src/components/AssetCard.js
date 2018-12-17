@@ -19,6 +19,7 @@ var styles = {
     backgroundColor: "white"
   }
 };
+//const archDiagramBaseURL = 'https://bcc4e6d5f607401ca25af4998b9e2932.mobile.ocp.oraclecloud.com/mobile/platform/storage/collections/NotionalArchitectureDiagrams/objects/';
 
 class AssetCard extends Component {
   constructor(props) {
@@ -92,12 +93,11 @@ class AssetCard extends Component {
   render() {
     var { asset, loading, topAsset, cardWidth } = this.props;
     var { active } = this.state;
-    if (loading || (!topAsset && !cardWidth)) {
+    if (loading){ //} || (!topAsset && !cardWidth)) {
       return this.loadingCard();
     }
     var pathname = "/assets/" + asset.scrm_id;
     var state = { asset };
-    console.log(asset);
     var publishDate = asset.publish_date || asset.createdOn;
     return (
       <Card

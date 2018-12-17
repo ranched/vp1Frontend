@@ -3,7 +3,7 @@ import './App.css';
 import MainPage from './components/MainPage';
 import CreateAsset from './components/CreateAsset';
 import ScrollToTop from './components/ScrollToTop';
-import NavBar from './components/NavBar';
+//import NavBar from './components/NavBar';
 
 // import route Components here
 import {
@@ -25,7 +25,7 @@ class App extends Component {
     return (
       <Router>
         <ScrollToTop>
-          <NavBar />
+          {/* <NavBar /> */}
           <Switch className="App">
             <Route exact path='/' render={(props) => <Redirect to="/assets" {...props} />} />
             <Route path="/assets" render={(props) => <MainPage {...props} />} />

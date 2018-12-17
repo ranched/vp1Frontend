@@ -13,6 +13,7 @@ import {
   Rail,
   Button
 } from "semantic-ui-react";
+import ScrollToTop from './ScrollToTop';
 //import { sampleAssets, assetsMap } from '../sample/assets';
 import * as api from "../services/digitalAssets";
 import descriptionImg from "../assets/images/asset-description.png";
@@ -109,375 +110,377 @@ class AssetDetail extends Component {
       ? new Date(asset.publish_date).toLocaleDateString()
       : "Unpublished";
     return (
-      <Container
-        fluid
-        className="assetPage"
-        style={{ backgroundColor: "#F7F7F7", alignItems: "center" }}
-      >
-        <Grid centered columns={2} className="assetPageGrid">
-          <Grid.Column width={11} className="primaryColumn">
-            <Segment.Group raised className="assetContent">
-              <Segment>
-                <Rail position="left" className="assetRail">
-                  <Button
-                    as={Link}
-                    to="/assets"
-                    circular
-                    color="black"
-                    size="huge"
+      <ScrollToTop>
+        <Container
+          fluid
+          className="assetPage"
+          style={{ backgroundColor: "#F7F7F7", alignItems: "center" }}
+        >
+          <Grid centered columns={2} className="assetPageGrid">
+            <Grid.Column width={11} className="primaryColumn">
+              <Segment.Group raised className="assetContent">
+                <Segment>
+                  <Rail position="left" className="assetRail">
+                    <Button
+                      as={Link}
+                      to="/assets"
+                      circular
+                      color="black"
+                      size="huge"
+                    >
+                      <Icon name="left arrow" />
+                      BACK
+                    </Button>
+                  </Rail>
+                  <Header
+                    as="h1"
+                    style={{ marginBottom: "0px", paddingBottom: "12px" }}
                   >
-                    <Icon name="left arrow" />
-                    BACK
-                  </Button>
-                </Rail>
-                <Header
-                  as="h1"
-                  style={{ marginBottom: "0px", paddingBottom: "12px" }}
-                >
-                  <Header.Content>{asset.title}</Header.Content>
-                </Header>
-                <Header
-                  as="h2"
-                  style={{
-                    marginTop: "0px",
-                    marginBottom: "0px",
-                    paddingBottom: "5px"
-                  }}
-                >
-                  <Header.Content>{asset.view_count + " views"}</Header.Content>
-                </Header>
-                {this.getKeyDetails(asset)}
-              </Segment>
-            </Segment.Group>
-            <Segment.Group raised className="assetContent">
-              <Segment>
-                <Header
-                  as="h2"
-                  style={{ marginTop: "0px", paddingBottom: "5px" }}
-                >
-                  <Header.Content>{"Notional Architecture"}</Header.Content>
-                </Header>
-                <Image src={asset.arch_diagram} />
-              </Segment>
-            </Segment.Group>
-            <Segment.Group raised className="assetContent">
-              <Segment>
-                <Item.Group>
-                  <Item>
-                    <Item.Image
-                      size="tiny"
-                      src={descriptionImg}
-                      style={{ paddingTop: "5px" }}
-                    />
-                    <Item.Content>
-                      <Item.Header as="h2" style={{ fontSize: "24px" }}>
-                        Asset Description
-                      </Item.Header>
-                      <Item.Description style={{ fontSize: "18px" }}>
-                        <p>{asset.description}</p>
-                      </Item.Description>
-                    </Item.Content>
-                  </Item>
-                </Item.Group>
-              </Segment>
-              <Segment>
-                <Item.Group style={{ verticalAlign: "middle" }}>
-                  <Item style={{ verticalAlign: "middle" }}>
-                    <Item.Image
-                      size="tiny"
-                      src={useCaseImg}
-                      style={{
-                        paddingTop: "5px",
-                        margin: "auto"
-                      }}
-                    />
-                    <Item.Content>
-                      <Item.Header
-                        as="h2"
-                        style={{ fontSize: "24px", marginBottom: "15px" }}
+                    <Header.Content>{asset.title}</Header.Content>
+                  </Header>
+                  <Header
+                    as="h2"
+                    style={{
+                      marginTop: "0px",
+                      marginBottom: "0px",
+                      paddingBottom: "5px"
+                    }}
+                  >
+                    <Header.Content>{asset.view_count + " views"}</Header.Content>
+                  </Header>
+                  {this.getKeyDetails(asset)}
+                </Segment>
+              </Segment.Group>
+              <Segment.Group raised className="assetContent">
+                <Segment>
+                  <Header
+                    as="h2"
+                    style={{ marginTop: "0px", paddingBottom: "5px" }}
+                  >
+                    <Header.Content>{"Notional Architecture"}</Header.Content>
+                  </Header>
+                  <Image src={asset.arch_diagram} />
+                </Segment>
+              </Segment.Group>
+              <Segment.Group raised className="assetContent">
+                <Segment>
+                  <Item.Group>
+                    <Item>
+                      <Item.Image
+                        size="tiny"
+                        src={descriptionImg}
+                        style={{ paddingTop: "5px" }}
+                      />
+                      <Item.Content>
+                        <Item.Header as="h2" style={{ fontSize: "24px" }}>
+                          Asset Description
+                        </Item.Header>
+                        <Item.Description style={{ fontSize: "18px" }}>
+                          <p>{asset.description}</p>
+                        </Item.Description>
+                      </Item.Content>
+                    </Item>
+                  </Item.Group>
+                </Segment>
+                <Segment>
+                  <Item.Group style={{ verticalAlign: "middle" }}>
+                    <Item style={{ verticalAlign: "middle" }}>
+                      <Item.Image
+                        size="tiny"
+                        src={useCaseImg}
+                        style={{
+                          paddingTop: "5px",
+                          margin: "auto"
+                        }}
+                      />
+                      <Item.Content>
+                        <Item.Header
+                          as="h2"
+                          style={{ fontSize: "24px", marginBottom: "15px" }}
+                        >
+                          Use Case(s)
+                        </Item.Header>
+                        <Item.Description as="List" style={{ fontSize: "18px" }}>
+                          {this.getUseCases(asset)}
+                        </Item.Description>
+                      </Item.Content>
+                    </Item>
+                  </Item.Group>
+                </Segment>
+              </Segment.Group>
+              <Segment.Group>
+                <Segment>
+                  <Header
+                    as="h2"
+                    style={{ marginTop: "0px", paddingBottom: "5px" }}
+                  >
+                    <Header.Content>{"Video Demonstration"}</Header.Content>
+                  </Header>
+                  <Embed
+                    active={true}
+                    id="kmsembed-0_fhworweh"
+                    className="kmsembed"
+                    placeholder={asset.arch_diagram}
+                    /* icon="youtube play inverted" */
+                    /* icon={<Icon name="youtube play" />} */
+                    iframe={{
+                      title: "oTubeLink",
+                      src: asset.otube_url,
+                      width: "768",
+                      height: "515",
+                      allowFullScreen: true,
+                      webkitallowfullscreen: true,
+                      mozAllowFullScreen: true,
+                      frameborder: "0",
+                      style: {}
+                    }}
+                  />
+                </Segment>
+              </Segment.Group>
+            </Grid.Column>
+
+            <Grid.Column width={5} className="secondaryColumn">
+              <Segment.Group
+                raised
+                className="assetContent"
+                style={{ paddingTop: "20px" }}
+              >
+                <Segment>
+                  <Item.Group>
+                    <Item>
+                      <Item.Content>
+                        <Item.Header as="h2" style={{ fontSize: "24px" }}>
+                          About This Asset
+                        </Item.Header>
+                      </Item.Content>
+                    </Item>
+                    <Item>
+                      <Item.Content>
+                        <Item.Description style={{ fontSize: "18px" }}>
+                          <p>Customer</p>
+                        </Item.Description>
+                        <Item.Meta>
+                          <span>{asset.customer}</span>
+                        </Item.Meta>
+                      </Item.Content>
+                    </Item>
+                    <Item>
+                      <Item.Content>
+                        <Item.Description style={{ fontSize: "18px" }}>
+                          <p>Created On</p>
+                        </Item.Description>
+                        <Item.Meta>
+                          <span>{asset.createdOn}</span>
+                        </Item.Meta>
+                      </Item.Content>
+                    </Item>
+                    <Item>
+                      <Item.Content>
+                        <Item.Description style={{ fontSize: "18px" }}>
+                          <p>Published On</p>
+                        </Item.Description>
+                        <Item.Meta>
+                          <span>{publishDate}</span>
+                        </Item.Meta>
+                      </Item.Content>
+                    </Item>
+                    <Item>
+                      <Item.Content>
+                        <Item.Description style={{ fontSize: "18px" }}>
+                          <p>Downloads</p>
+                        </Item.Description>
+                        <Item.Meta>
+                          <span>{asset.view_count}</span>
+                        </Item.Meta>
+                      </Item.Content>
+                    </Item>
+                  </Item.Group>
+                </Segment>
+              </Segment.Group>
+
+              <Segment.Group
+                raised
+                className="assetContent"
+                style={{ paddingTop: "20px" }}
+              >
+                <Segment>
+                  <Item.Group>
+                    <Item style={{ paddingBottom: "21px" }}>
+                      <Item.Image size="tiny" src={wireframeImg} />
+                      <Item.Content verticalAlign="middle">
+                        <Item.Header as="h2" style={{ fontSize: "24px" }}>
+                          Cloud Services
+                        </Item.Header>
+                      </Item.Content>
+                    </Item>
+                    <Item style={{ margin: "7px 0px" }}>
+                      <Item.Image
+                        size="mini"
+                        src={wireframeImg}
+                        style={{ marginLeft: "22.5px" }}
+                      />
+                      <Item.Content
+                        verticalAlign="middle"
+                        style={{ paddingLeft: "43.5px" }}
                       >
-                        Use Case(s)
-                      </Item.Header>
-                      <Item.Description as="List" style={{ fontSize: "18px" }}>
-                        {this.getUseCases(asset)}
-                      </Item.Description>
-                    </Item.Content>
-                  </Item>
-                </Item.Group>
-              </Segment>
-            </Segment.Group>
-            <Segment.Group>
-              <Segment>
-                <Header
-                  as="h2"
-                  style={{ marginTop: "0px", paddingBottom: "5px" }}
-                >
-                  <Header.Content>{"Video Demonstration"}</Header.Content>
-                </Header>
-                <Embed
-                  active={true}
-                  id="kmsembed-0_fhworweh"
-                  className="kmsembed"
-                  placeholder={asset.arch_diagram}
-                  /* icon="youtube play inverted" */
-                  /* icon={<Icon name="youtube play" />} */
-                  iframe={{
-                    title: "oTubeLink",
-                    src: asset.otube_url,
-                    width: "768",
-                    height: "515",
-                    allowFullScreen: true,
-                    webkitallowfullscreen: true,
-                    mozAllowFullScreen: true,
-                    frameborder: "0",
-                    style: {}
-                  }}
-                />
-              </Segment>
-            </Segment.Group>
-          </Grid.Column>
+                        <Item.Header as="h2">CS 1</Item.Header>
+                      </Item.Content>
+                    </Item>
+                    <Item style={{ margin: "7px 0px" }}>
+                      <Item.Image
+                        size="mini"
+                        src={wireframeImg}
+                        style={{ marginLeft: "22.5px" }}
+                      />
+                      <Item.Content
+                        verticalAlign="middle"
+                        style={{ paddingLeft: "43.5px" }}
+                      >
+                        <Item.Header as="h2">CS 2</Item.Header>
+                      </Item.Content>
+                    </Item>
+                    <Item style={{ margin: "7px 0px" }}>
+                      <Item.Image
+                        size="mini"
+                        src={wireframeImg}
+                        style={{ marginLeft: "22.5px" }}
+                      />
+                      <Item.Content
+                        verticalAlign="middle"
+                        style={{ paddingLeft: "43.5px" }}
+                      >
+                        <Item.Header as="h2">CS 3</Item.Header>
+                      </Item.Content>
+                    </Item>
+                  </Item.Group>
+                </Segment>
+              </Segment.Group>
 
-          <Grid.Column width={5} className="secondaryColumn">
-            <Segment.Group
-              raised
-              className="assetContent"
-              style={{ paddingTop: "20px" }}
-            >
-              <Segment>
-                <Item.Group>
-                  <Item>
-                    <Item.Content>
-                      <Item.Header as="h2" style={{ fontSize: "24px" }}>
-                        About This Asset
-                      </Item.Header>
-                    </Item.Content>
-                  </Item>
-                  <Item>
-                    <Item.Content>
-                      <Item.Description style={{ fontSize: "18px" }}>
-                        <p>Customer</p>
-                      </Item.Description>
-                      <Item.Meta>
-                        <span>{asset.customer}</span>
-                      </Item.Meta>
-                    </Item.Content>
-                  </Item>
-                  <Item>
-                    <Item.Content>
-                      <Item.Description style={{ fontSize: "18px" }}>
-                        <p>Created On</p>
-                      </Item.Description>
-                      <Item.Meta>
-                        <span>{asset.createdOn}</span>
-                      </Item.Meta>
-                    </Item.Content>
-                  </Item>
-                  <Item>
-                    <Item.Content>
-                      <Item.Description style={{ fontSize: "18px" }}>
-                        <p>Published On</p>
-                      </Item.Description>
-                      <Item.Meta>
-                        <span>{publishDate}</span>
-                      </Item.Meta>
-                    </Item.Content>
-                  </Item>
-                  <Item>
-                    <Item.Content>
-                      <Item.Description style={{ fontSize: "18px" }}>
-                        <p>Downloads</p>
-                      </Item.Description>
-                      <Item.Meta>
-                        <span>{asset.view_count}</span>
-                      </Item.Meta>
-                    </Item.Content>
-                  </Item>
-                </Item.Group>
-              </Segment>
-            </Segment.Group>
+              <Segment.Group
+                raised
+                className="assetContent"
+                style={{ paddingTop: "20px" }}
+              >
+                <Segment>
+                  <Item.Group>
+                    <Item style={{ paddingBottom: "21px" }}>
+                      <Item.Image size="tiny" src={wireframeImg} />
+                      <Item.Content verticalAlign="middle">
+                        <Item.Header as="h2" style={{ fontSize: "24px" }}>
+                          Industries
+                        </Item.Header>
+                      </Item.Content>
+                    </Item>
+                    <Item style={{ margin: "7px 0px" }}>
+                      <Item.Image
+                        size="mini"
+                        src={wireframeImg}
+                        style={{ marginLeft: "22.5px" }}
+                      />
+                      <Item.Content
+                        verticalAlign="middle"
+                        style={{ paddingLeft: "43.5px" }}
+                      >
+                        <Item.Header as="h2">Industry 1</Item.Header>
+                      </Item.Content>
+                    </Item>
+                    <Item style={{ margin: "7px 0px" }}>
+                      <Item.Image
+                        size="mini"
+                        src={wireframeImg}
+                        style={{ marginLeft: "22.5px" }}
+                      />
+                      <Item.Content
+                        verticalAlign="middle"
+                        style={{ paddingLeft: "43.5px" }}
+                      >
+                        <Item.Header as="h2">Industry 2</Item.Header>
+                      </Item.Content>
+                    </Item>
+                    <Item style={{ margin: "7px 0px" }}>
+                      <Item.Image
+                        size="mini"
+                        src={wireframeImg}
+                        style={{ marginLeft: "22.5px" }}
+                      />
+                      <Item.Content
+                        verticalAlign="middle"
+                        style={{ paddingLeft: "43.5px" }}
+                      >
+                        <Item.Header as="h2">Industry 3</Item.Header>
+                      </Item.Content>
+                    </Item>
+                  </Item.Group>
+                </Segment>
+              </Segment.Group>
 
-            <Segment.Group
-              raised
-              className="assetContent"
-              style={{ paddingTop: "20px" }}
-            >
-              <Segment>
-                <Item.Group>
-                  <Item style={{ paddingBottom: "21px" }}>
-                    <Item.Image size="tiny" src={wireframeImg} />
-                    <Item.Content verticalAlign="middle">
-                      <Item.Header as="h2" style={{ fontSize: "24px" }}>
-                        Cloud Services
-                      </Item.Header>
-                    </Item.Content>
-                  </Item>
-                  <Item style={{ margin: "7px 0px" }}>
-                    <Item.Image
-                      size="mini"
-                      src={wireframeImg}
-                      style={{ marginLeft: "22.5px" }}
-                    />
-                    <Item.Content
-                      verticalAlign="middle"
-                      style={{ paddingLeft: "43.5px" }}
-                    >
-                      <Item.Header as="h2">CS 1</Item.Header>
-                    </Item.Content>
-                  </Item>
-                  <Item style={{ margin: "7px 0px" }}>
-                    <Item.Image
-                      size="mini"
-                      src={wireframeImg}
-                      style={{ marginLeft: "22.5px" }}
-                    />
-                    <Item.Content
-                      verticalAlign="middle"
-                      style={{ paddingLeft: "43.5px" }}
-                    >
-                      <Item.Header as="h2">CS 2</Item.Header>
-                    </Item.Content>
-                  </Item>
-                  <Item style={{ margin: "7px 0px" }}>
-                    <Item.Image
-                      size="mini"
-                      src={wireframeImg}
-                      style={{ marginLeft: "22.5px" }}
-                    />
-                    <Item.Content
-                      verticalAlign="middle"
-                      style={{ paddingLeft: "43.5px" }}
-                    >
-                      <Item.Header as="h2">CS 3</Item.Header>
-                    </Item.Content>
-                  </Item>
-                </Item.Group>
-              </Segment>
-            </Segment.Group>
+              <Segment.Group
+                raised
+                className="assetContent"
+                style={{ paddingTop: "20px" }}
+              >
+                <Segment>
+                  <Item.Group>
+                    <Item style={{ paddingBottom: "21px" }}>
+                      <Item.Image size="tiny" src={wireframeImg} />
+                      <Item.Content verticalAlign="middle">
+                        <Item.Header as="h2" style={{ fontSize: "24px" }}>
+                          Hubsters
+                        </Item.Header>
+                      </Item.Content>
+                    </Item>
+                    <Item style={{ margin: "7px 0px" }}>
+                      <Item.Image
+                        size="mini"
+                        src={wireframeImg}
+                        style={{ marginLeft: "22.5px" }}
+                      />
+                      <Item.Content
+                        verticalAlign="middle"
+                        style={{ paddingLeft: "43.5px" }}
+                      >
+                        <Item.Header as="h2">Hubster 1</Item.Header>
+                      </Item.Content>
+                    </Item>
+                    <Item style={{ margin: "7px 0px" }}>
+                      <Item.Image
+                        size="mini"
+                        src={wireframeImg}
+                        style={{ marginLeft: "22.5px" }}
+                      />
+                      <Item.Content
+                        verticalAlign="middle"
+                        style={{ paddingLeft: "43.5px" }}
+                      >
+                        <Item.Header as="h2">Hubster 2</Item.Header>
+                      </Item.Content>
+                    </Item>
+                  </Item.Group>
+                </Segment>
+              </Segment.Group>
 
-            <Segment.Group
-              raised
-              className="assetContent"
-              style={{ paddingTop: "20px" }}
-            >
-              <Segment>
-                <Item.Group>
-                  <Item style={{ paddingBottom: "21px" }}>
-                    <Item.Image size="tiny" src={wireframeImg} />
-                    <Item.Content verticalAlign="middle">
-                      <Item.Header as="h2" style={{ fontSize: "24px" }}>
-                        Industries
-                      </Item.Header>
-                    </Item.Content>
-                  </Item>
-                  <Item style={{ margin: "7px 0px" }}>
-                    <Item.Image
-                      size="mini"
-                      src={wireframeImg}
-                      style={{ marginLeft: "22.5px" }}
-                    />
-                    <Item.Content
-                      verticalAlign="middle"
-                      style={{ paddingLeft: "43.5px" }}
-                    >
-                      <Item.Header as="h2">Industry 1</Item.Header>
-                    </Item.Content>
-                  </Item>
-                  <Item style={{ margin: "7px 0px" }}>
-                    <Item.Image
-                      size="mini"
-                      src={wireframeImg}
-                      style={{ marginLeft: "22.5px" }}
-                    />
-                    <Item.Content
-                      verticalAlign="middle"
-                      style={{ paddingLeft: "43.5px" }}
-                    >
-                      <Item.Header as="h2">Industry 2</Item.Header>
-                    </Item.Content>
-                  </Item>
-                  <Item style={{ margin: "7px 0px" }}>
-                    <Item.Image
-                      size="mini"
-                      src={wireframeImg}
-                      style={{ marginLeft: "22.5px" }}
-                    />
-                    <Item.Content
-                      verticalAlign="middle"
-                      style={{ paddingLeft: "43.5px" }}
-                    >
-                      <Item.Header as="h2">Industry 3</Item.Header>
-                    </Item.Content>
-                  </Item>
-                </Item.Group>
-              </Segment>
-            </Segment.Group>
-
-            <Segment.Group
-              raised
-              className="assetContent"
-              style={{ paddingTop: "20px" }}
-            >
-              <Segment>
-                <Item.Group>
-                  <Item style={{ paddingBottom: "21px" }}>
-                    <Item.Image size="tiny" src={wireframeImg} />
-                    <Item.Content verticalAlign="middle">
-                      <Item.Header as="h2" style={{ fontSize: "24px" }}>
-                        Hubsters
-                      </Item.Header>
-                    </Item.Content>
-                  </Item>
-                  <Item style={{ margin: "7px 0px" }}>
-                    <Item.Image
-                      size="mini"
-                      src={wireframeImg}
-                      style={{ marginLeft: "22.5px" }}
-                    />
-                    <Item.Content
-                      verticalAlign="middle"
-                      style={{ paddingLeft: "43.5px" }}
-                    >
-                      <Item.Header as="h2">Hubster 1</Item.Header>
-                    </Item.Content>
-                  </Item>
-                  <Item style={{ margin: "7px 0px" }}>
-                    <Item.Image
-                      size="mini"
-                      src={wireframeImg}
-                      style={{ marginLeft: "22.5px" }}
-                    />
-                    <Item.Content
-                      verticalAlign="middle"
-                      style={{ paddingLeft: "43.5px" }}
-                    >
-                      <Item.Header as="h2">Hubster 2</Item.Header>
-                    </Item.Content>
-                  </Item>
-                </Item.Group>
-              </Segment>
-            </Segment.Group>
-
-            <Segment.Group
-              raised
-              className="assetContent"
-              style={{ paddingTop: "20px" }}
-            >
-              <Segment>
-                <Item.Group>
-                  <Item style={{ paddingBottom: "21px" }}>
-                    <Item.Image size="tiny" src={wireframeImg} />
-                    <Item.Content verticalAlign="middle">
-                      <Item.Header as="h2" style={{ fontSize: "24px" }}>
-                        Asset Archive
-                      </Item.Header>
-                    </Item.Content>
-                  </Item>
-                </Item.Group>
-              </Segment>
-            </Segment.Group>
-          </Grid.Column>
-        </Grid>
-      </Container>
+              <Segment.Group
+                raised
+                className="assetContent"
+                style={{ paddingTop: "20px" }}
+              >
+                <Segment>
+                  <Item.Group>
+                    <Item style={{ paddingBottom: "21px" }}>
+                      <Item.Image size="tiny" src={wireframeImg} />
+                      <Item.Content verticalAlign="middle">
+                        <Item.Header as="h2" style={{ fontSize: "24px" }}>
+                          Asset Archive
+                        </Item.Header>
+                      </Item.Content>
+                    </Item>
+                  </Item.Group>
+                </Segment>
+              </Segment.Group>
+            </Grid.Column>
+          </Grid>
+        </Container>
+      </ScrollToTop>
 
     )
   }

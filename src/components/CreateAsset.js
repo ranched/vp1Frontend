@@ -13,6 +13,7 @@ import {
 import Dropzone from "react-dropzone";
 import dropOptions from "../sample/dropOptions";
 import * as api from "../services/digitalAssets";
+import NavBar from './NavBar';
 
 const capitalize = word => {
   if (word === "and") return word;
@@ -190,171 +191,175 @@ class CreateAssets extends Component {
     ));
 
     return (
-      <Container
-        fluid
-        className="createAsset"
-        style={{
-          backgroundColor: "#F7F7F7",
-          paddingTop: "80px",
-          paddingBottom: "80px"
-        }}
-      >
-        <Segment className="formSegment">
-          <Header
-            as="h1"
-            dividing
-            style={{ paddingBottom: "25px", marginBottom: "0px" }}
-          >
-            Create New Asset
-          </Header>
-          <Form
-            onSubmit={this.handleSubmit}
-            style={{ paddingTop: "25px" }}
-            className="createForm"
-          >
-            <Form.Field required>
-              <label>SCRM ID</label>
-              <Input
-                name="scrmId"
-                value={this.state.scrmId}
-                onChange={this.handleChange}
-              />
-            </Form.Field>
-            <Form.Field>
-              <label>Opp ID</label>
-              <Input
-                name="oppId"
-                value={this.state.oppId}
-                onChange={this.handleChange}
-              />
-            </Form.Field>
-            <Form.Field>
-              <label>Title</label>
-              <Input
-                name="title"
-                onChange={this.handleChange}
-                value={this.state.title}
-              />
-            </Form.Field>
-            <Form.Field>
-              <label>Customer</label>
-              <Input
-                name="customer"
-                onChange={this.handleChange}
-                value={this.state.customer}
-              />
-            </Form.Field>
-            <Form.Field>
-              <label>Hubsters</label>
-              <Input
-                name="hubsters"
-                onChange={this.handleChange}
-                value={this.state.hubsters}
-              />
-            </Form.Field>
-            <Form.Field>
-              <label>Code Repository</label>
-              <Input
-                name="repo"
-                placeholder="Repository URL"
-                onChange={this.handleChange}
-                value={this.state.repo}
-              />
-            </Form.Field>
-            <Form.Field>
-              <label>Architecture Diagram</label>
-              <section style={baseStyle}>
-                <Dropzone accept="image/*" onDrop={this.onDrop.bind(this)}>
-                  {({ getRootProps, getInputProps }) => (
-                    <div {...getRootProps()}>
-                      <input {...getInputProps()} />
-                      {!thumbs.length ? <p>Drop files here</p> : null}
-                    </div>
+      <React.Fragment>
+        <NavBar />
+        <Container
+          fluid
+          className="createAsset"
+          style={{
+            backgroundColor: "#F7F7F7",
+            paddingTop: "80px",
+            paddingBottom: "80px"
+          }}
+        >
+          <Segment className="formSegment">
+            <Header
+              as="h1"
+              dividing
+              style={{ paddingBottom: "25px", marginBottom: "0px" }}
+            >
+              Create New Asset
+            </Header>
+            <Form
+              onSubmit={this.handleSubmit}
+              style={{ paddingTop: "25px" }}
+              className="createForm"
+            >
+              <Form.Field required>
+                <label>SCRM ID</label>
+                <Input
+                  name="scrmId"
+                  value={this.state.scrmId}
+                  onChange={this.handleChange}
+                />
+              </Form.Field>
+              <Form.Field>
+                <label>Opp ID</label>
+                <Input
+                  name="oppId"
+                  value={this.state.oppId}
+                  onChange={this.handleChange}
+                />
+              </Form.Field>
+              <Form.Field>
+                <label>Title</label>
+                <Input
+                  name="title"
+                  onChange={this.handleChange}
+                  value={this.state.title}
+                />
+              </Form.Field>
+              <Form.Field>
+                <label>Customer</label>
+                <Input
+                  name="customer"
+                  onChange={this.handleChange}
+                  value={this.state.customer}
+                />
+              </Form.Field>
+              <Form.Field>
+                <label>Hubsters</label>
+                <Input
+                  name="hubsters"
+                  onChange={this.handleChange}
+                  value={this.state.hubsters}
+                />
+              </Form.Field>
+              <Form.Field>
+                <label>Code Repository</label>
+                <Input
+                  name="repo"
+                  placeholder="Repository URL"
+                  onChange={this.handleChange}
+                  value={this.state.repo}
+                />
+              </Form.Field>
+              <Form.Field>
+                <label>Architecture Diagram</label>
+                <section style={baseStyle}>
+                  <Dropzone accept="image/*" onDrop={this.onDrop.bind(this)}>
+                    {({ getRootProps, getInputProps }) => (
+                      <div {...getRootProps()}>
+                        <input {...getInputProps()} />
+                        {!thumbs.length ? <p>Drop files here</p> : null}
+                      </div>
+                    )}
+                  </Dropzone>
+                  <aside style={thumbsContainer}>{thumbs}</aside>
+                </section>
+                {!thumbs.length ? null : (
+                  <p style={{ marginBottom: "0" }}>{files[0].name}</p>
+                )}
+              </Form.Field>
+              <Form.Field>
+                <label>OTube Link</label>
+                <Input
+                  name="otubeLink"
+                  placeholder="OTube URL"
+                  onChange={this.handleChange}
+                  value={this.state.otubeLink}
+                />
+              </Form.Field>
+              <Form.Field>
+                <label>Use Case</label>
+                <TextArea
+                  name="useCase"
+                  placeholder="Please enter a brief description"
+                  onInput={this.handleChange}
+                /* value={this.state.useCase} */
+                />
+              </Form.Field>
+              <Form.Field>
+                <label>Description</label>
+                <TextArea
+                  name="description"
+                  placeholder="Please enter a brief description"
+                  onInput={this.handleChange}
+                /* value={this.state.description} */
+                />
+              </Form.Field>
+              <Form.Field>
+                <label>Industries</label>
+                <Dropdown
+                  fluid
+                  scrolling
+                  multiple
+                  name="industries"
+                  value={this.state.industries}
+                  onChange={this.handleChange}
+                  options={dropOptions.industries.map(industry =>
+                    format(industry)
                   )}
-                </Dropzone>
-                <aside style={thumbsContainer}>{thumbs}</aside>
-              </section>
-              {!thumbs.length ? null : (
-                <p style={{ marginBottom: "0" }}>{files[0].name}</p>
-              )}
-            </Form.Field>
-            <Form.Field>
-              <label>OTube Link</label>
-              <Input
-                name="otubeLink"
-                placeholder="OTube URL"
-                onChange={this.handleChange}
-                value={this.state.otubeLink}
-              />
-            </Form.Field>
-            <Form.Field>
-              <label>Use Case</label>
-              <TextArea
-                name="useCase"
-                placeholder="Please enter a brief description"
-                onInput={this.handleChange}
-              /* value={this.state.useCase} */
-              />
-            </Form.Field>
-            <Form.Field>
-              <label>Description</label>
-              <TextArea
-                name="description"
-                placeholder="Please enter a brief description"
-                onInput={this.handleChange}
-              /* value={this.state.description} */
-              />
-            </Form.Field>
-            <Form.Field>
-              <label>Industries</label>
-              <Dropdown
-                fluid
-                scrolling
-                multiple
-                name="industries"
-                value={this.state.industries}
-                onChange={this.handleChange}
-                options={dropOptions.industries.map(industry =>
-                  format(industry)
-                )}
-              />
-            </Form.Field>
-            <Form.Field>
-              <label>Cloud Services</label>
-              <Dropdown
-                fluid
-                scrolling
-                multiple
-                name="cloudServices"
-                value={this.state.cloudServices}
-                onChange={this.handleChange}
-                options={dropOptions.cloudServices.map(service =>
-                  format(service)
-                )}
-              />
-            </Form.Field>
-            <Form.Field>
-              <label>Pillars</label>
-              <Dropdown
-                fluid
-                scrolling
-                multiple
-                name="pillars"
-                value={this.state.pillars}
-                onChange={this.handleChange}
-                options={dropOptions.pillars.map(pillar => format(pillar))}
-              />
-            </Form.Field>
+                />
+              </Form.Field>
+              <Form.Field>
+                <label>Cloud Services</label>
+                <Dropdown
+                  fluid
+                  scrolling
+                  multiple
+                  name="cloudServices"
+                  value={this.state.cloudServices}
+                  onChange={this.handleChange}
+                  options={dropOptions.cloudServices.map(service =>
+                    format(service)
+                  )}
+                />
+              </Form.Field>
+              <Form.Field>
+                <label>Pillars</label>
+                <Dropdown
+                  fluid
+                  scrolling
+                  multiple
+                  name="pillars"
+                  value={this.state.pillars}
+                  onChange={this.handleChange}
+                  options={dropOptions.pillars.map(pillar => format(pillar))}
+                />
+              </Form.Field>
 
-            <Form.Group>
-              <Form.Button primary>SUBMIT</Form.Button>
-              <Button as={Link} to="/">
-                CANCEL
-              </Button>
-            </Form.Group>
-          </Form>
-        </Segment>
-      </Container>
+              <Form.Group>
+                <Form.Button primary>SUBMIT</Form.Button>
+                <Button as={Link} to="/">
+                  CANCEL
+                </Button>
+              </Form.Group>
+            </Form>
+          </Segment>
+        </Container>
+        
+        </React.Fragment>
     );
   }
 }

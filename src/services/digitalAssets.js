@@ -154,11 +154,14 @@ export const getAvailableScrms = () => {
     .catch(error => { console.log(error); })
 }
 
+export const postArchImg = (imageObj) => {
+  var reqUrl = apiUrl + 'uploadImage';
+  return axios.post(reqUrl, imageObj, { headers, auth })
+}
+
 export const postAsset = (assetObj) => {
   var reqUrl = apiUrl + 'assets';
   return axios.post(reqUrl, assetObj, { headers, auth })
-    .then(result => result.data)
-    .catch(error => { console.log(error); throw Error(error); });
 }
 
 export const postIndustry = (industryObj) => {

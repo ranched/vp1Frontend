@@ -124,6 +124,11 @@ class CreateAssets extends Component {
     e.preventDefault();
     var asset = this.state;
 
+    const imagePostObj = {
+      image_name: asset.archImage.name,
+      encoded_image: asset.archImage.base64
+    };
+
     const assetPostObj = {
       scrm_id: asset.scrmId,
       opp_id: asset.oppId,
@@ -136,18 +141,29 @@ class CreateAssets extends Component {
       hubsters: convertStringToArray(asset.hubsters),
       pillars: asset.pillars,
       industries: asset.industries,
-      image_name: asset.archImage.name,
-      encoded_image: asset.archImage.base64,
       createdBy: asset.userEmail,
       customer: asset.customer,
       modifiedBy: asset.userEmail,
       modifiedOn: new Date()
     };
 
-    // make asset post
-    api.postAsset(assetPostObj).catch(error => console.log(error));
+    // make image post
+    api.postArchImg(imagePostObj)
+    .then(result => {
+      assetPostObj.image_id = result.data.arch_diagram_id;
+      assetPostObj.image_url = result.data.image_url;
+      console.log('post image', result);
+      // make asset post
+      return api.postAsset(assetPostObj)
+    })
+    .then(result => {
+      console.log('post asset', result);
+      // redirect back to assets list
+      this.props.history.push("/assets");
+    })
+    .catch(error => console.log(error));
 
-    this.props.history.push("/assets");
+    
 
     //this.setState({ submitted: true });
   };

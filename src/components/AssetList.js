@@ -74,7 +74,7 @@ class AssetList extends Component {
         />
       );
     });
-    if (!topAssets) assetArr.push(<RecentsFooter key="recentsFooter" />);
+    //if (!topAssets) assetArr.push(<RecentsFooter key="recentsFooter" />);
     return (
       <Card.Group
         itemsPerRow={topAssets ? 4 : 1}

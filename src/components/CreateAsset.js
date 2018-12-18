@@ -136,7 +136,7 @@ class CreateAssets extends Component {
       hubsters: convertStringToArray(asset.hubsters),
       pillars: asset.pillars,
       industries: asset.industries,
-      image_name: asset.arch_image.name,
+      image_name: asset.archImage.name,
       encoded_image: asset.archImage.base64,
       createdBy: asset.userEmail,
       customer: asset.customer,

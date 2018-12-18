@@ -136,7 +136,7 @@ class CreateAssets extends Component {
       hubsters: convertStringToArray(asset.hubsters),
       pillars: asset.pillars,
       industries: asset.industries,
-      image_name: asset.files[0].name,
+      image_name: asset.arch_image.name,
       encoded_image: asset.archImage.base64,
       createdBy: asset.userEmail,
       customer: asset.customer,
@@ -154,6 +154,7 @@ class CreateAssets extends Component {
 
   onDrop = files => {
     var file = files[0];
+    console.log(file);
     var reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {

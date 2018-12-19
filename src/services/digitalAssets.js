@@ -155,7 +155,7 @@ export const getAvailableScrms = () => {
 }
 
 export const postArchImg = (imageObj) => {
-  var reqUrl = apiUrl + 'uploadImage';
+  var reqUrl = apiUrl + 'assets/upload';
   return axios.post(reqUrl, imageObj, { headers, auth })
 }
 

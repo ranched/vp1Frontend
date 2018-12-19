@@ -40,6 +40,23 @@ const convertStringToArray = str => {
   return str.split(",").map(trimStringSpaces);
 };
 
+const mapHubstersToObjs = (hubstersArr, scrmId) => {
+  return hubstersArr.map(hubster => ({scrm_id: scrmId, hubster_name: hubster}))
+}
+
+const mapPillarsToObjs = (pillarsArr, scrmId) => {
+  return pillarsArr.map(pillar => ({scrm_id: scrmId, pillar: pillar}))
+}
+
+const mapCloudServicesToObjs = (cloudServicesArr, scrmId) => {
+  return cloudServicesArr.map(cloudService => ({scrm_id: scrmId, cloud_service: cloudService}))
+}
+
+const mapIndustriesToObjs = (industriesArr, scrmId) => {
+  return industriesArr.map(industry => ({scrm_id: scrmId, industry: industry}))
+}
+
+
 const thumbsContainer = {
   display: "flex",
   flexDirection: "row",
@@ -125,39 +142,37 @@ class CreateAssets extends Component {
     var asset = this.state;
 
     const imagePostObj = {
-      image_name: asset.archImage.name,
-      encoded_image: asset.archImage.base64
+      "image_name": asset.archImage.name,
+      "encoded_image": asset.archImage.base64
     };
 
     const assetPostObj = {
-      scrm_id: asset.scrmId,
-      opp_id: asset.oppId,
-      title: asset.title,
-      repo_url: asset.repo,
-      otube_url: asset.otubeLink,
-      view_count: 0,
-      description: asset.description,
-      cloud_services: asset.cloudServices,
-      hubsters: convertStringToArray(asset.hubsters),
-      pillars: asset.pillars,
-      industries: asset.industries,
-      createdBy: asset.userEmail,
-      customer: asset.customer,
-      modifiedBy: asset.userEmail,
-      modifiedOn: new Date()
+      "scrm_id": asset.scrmId,
+      "opp_id": asset.oppId,
+      "title": asset.title,
+      "repo_url": asset.repo,
+      "otube_url": asset.otubeLink,
+      "view_count": 0,
+      "description": asset.description,
+      "cloud_services": mapCloudServicesToObjs(asset.cloudServices, asset.scrmId),
+      "hubsters": mapHubstersToObjs(convertStringToArray(asset.hubsters), asset.scrmId),
+      "pillars": mapPillarsToObjs(asset.pillars, asset.scrmId),
+      "industries": mapIndustriesToObjs(asset.industries, asset.scrmId),
+      "createdBy": asset.userEmail || "",
+      "customer": asset.customer,
+      "modifiedBy": asset.userEmail || "",
+      "modifiedOn": new Date().toISOString()
     };
 
     // make image post
     api.postArchImg(imagePostObj)
     .then(result => {
-      assetPostObj.image_id = result.data.arch_diagram_id;
+      assetPostObj.arch_diagram_id = result.data.arch_diagram_id;
       assetPostObj.image_url = result.data.image_url;
-      console.log('post image', result);
       // make asset post
       return api.postAsset(assetPostObj)
     })
     .then(result => {
-      console.log('post asset', result);
       // redirect back to assets list
       this.props.history.push("/assets");
     })
@@ -170,7 +185,6 @@ class CreateAssets extends Component {
 
   onDrop = files => {
     var file = files[0];
-    console.log(file);
     var reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
@@ -217,9 +231,8 @@ class CreateAssets extends Component {
   updateScrmId = (e, { name, value }) => {
     let scrmRecord = this.state.scrmObjs.filter(record => record.scrm_id === value)[0];
     this.setState(previousState => {
-      debugger;
       return {
-        scrm_id: value,
+        scrmId: value,
         oppId: scrmRecord.opp_id,
         customer: scrmRecord.account_name,
         title: scrmRecord.engagement_name,
@@ -286,7 +299,7 @@ class CreateAssets extends Component {
                   options={this.state.scrmDropOptions}
                   placeholder='Select SCRM ID'
                   selection
-                  value={this.state.scrm_id}
+                  value={this.state.scrmId}
                 />
               </Form.Field>
               <Form.Field>
